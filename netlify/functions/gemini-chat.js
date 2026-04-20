@@ -1,7 +1,9 @@
 /**
  * Google Gemini AI Chat (server-side only).
- * Netlify: Site settings → Environment variables
- *   GEMINI_API_KEY  — API key from Google AI Studio
+ *
+ * Uses Netlify AI Gateway which automatically injects GEMINI_API_KEY and
+ * GOOGLE_GEMINI_BASE_URL at runtime — no manual key setup required.
+ * https://docs.netlify.com/build/ai-gateway/overview/
  */
 exports.handler = async (event) => {
   const q = (event.queryStringParameters && event.queryStringParameters.q) || '';
@@ -9,7 +11,7 @@ exports.handler = async (event) => {
   if (event.httpMethod === 'POST' && event.body) {
     try {
       bodyData = JSON.parse(event.body);
-    } catch(e) {}
+    } catch (e) {}
   }
   const prompt = String(bodyData.prompt || q).trim();
 
@@ -26,8 +28,11 @@ exports.handler = async (event) => {
     };
   }
 
+  const baseUrl = (process.env.GOOGLE_GEMINI_BASE_URL || 'https://generativelanguage.googleapis.com').replace(/\/+$/, '');
+  const model = 'gemini-2.5-flash';
+
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
+    const url = `${baseUrl}/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`;
     const payload = {
       contents: [{
         parts: [{ text: prompt }]
@@ -42,11 +47,11 @@ exports.handler = async (event) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    
+
     const data = await res.json();
-    
+
     if (!res.ok) {
-      const msg = data && data.error && data.error.message ? data.error.message : 'api_error';
+      const msg = data && data.error && data.error.message ? data.error.message : `api_error_${res.status}`;
       return {
         statusCode: 200,
         headers: { 'Content-Type': 'application/json' },
