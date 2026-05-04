@@ -712,7 +712,7 @@ const CHAT_I18N = {
       'Could not evaluate that expression. Use digits, + − * / ^ %, parentheses, or sqrt(16), sin(0.5), pow(2,8), log(100), pi, e.',
     wiki_miss: 'No clear Wikipedia match. Try different words or use the links below.',
     intro_default:
-      "Hi! Ask about Vivek's skills, projects, or education. For other topics I load Wikipedia here. Turn AI on for optional Gemini polish (GEMINI_API_KEY on Netlify).",
+      "Hi! Ask about Vivek's skills, projects, or education. For other topics I load Wikipedia here.",
     identity:
       "I'm Vivek Sharma, an 18-year-old B.Tech CSE student at Lovely Professional University. My goal is to become a skilled software developer!",
     project:
@@ -722,11 +722,11 @@ const CHAT_I18N = {
     education:
       "I'm pursuing B.Tech Computer Science Engineering at Lovely Professional University (LPU).",
     gemini_help:
-      'For general topics I show Wikipedia here. Turn AI on and set GEMINI_API_KEY on Netlify for optional Google Gemini polish.',
+      'For general topics I show Wikipedia here.',
     contact:
       'Email: viveklpu008@gmail.com — or use the Contact form on this site.',
     hello_greet:
-      "Hello! Ask about Vivek's skills, projects, or education. Other questions use Wikipedia in-chat; AI toggle = optional Gemini.",
+      "Hello! Ask about Vivek's skills, projects, or education. Other questions use Wikipedia in-chat.",
   },
   hi: {
     stopped: 'रोका गया।',
@@ -735,7 +735,7 @@ const CHAT_I18N = {
       'इसे हल नहीं कर सका। अंक, + − * / ^ %, कोष्ठक, या sqrt(16), pow(2,8), log(100), pi, e आदि इस्तेमाल करें।',
     wiki_miss: 'विकिपीडिया पर साफ़ मेल नहीं मिला। शब्द बदलकर देखें या नीचे लिंक उपयोग करें।',
     intro_default:
-      'नमस्ते! विवेक के बारे में, स्किल्स, प्रोजेक्ट या पढ़ाई पूछें। बाकी विषयों के लिए यहाँ विकिपीडिया सार मिलेगा। AI चालू करने पर Gemini संक्षेप (Netlify पर GEMINI_API_KEY)।',
+      'नमस्ते! विवेक के बारे में, स्किल्स, प्रोजेक्ट या पढ़ाई पूछें। बाकी विषयों के लिए यहाँ विकिपीडिया सार मिलेगा।',
     identity:
       'मैं विवेक शर्मा हूँ — लवली प्रोफेशनल यूनिवर्सिटी में B.Tech CSE का छात्र। मेरा लक्ष्य एक कुशल सॉफ्टवेयर डेवलपर बनना है!',
     project:
@@ -744,7 +744,7 @@ const CHAT_I18N = {
       'स्किल्स: C, Python, HTML, CSS, JavaScript — समस्या सुलझाना और लगातार सीखना।',
     education: 'मैं लवली प्रोफेशनल यूनिवर्सिटी (LPU) से B.Tech CSE कर रहा हूँ।',
     gemini_help:
-      'सामान्य विषयों के लिए यहाँ विकिपीडिया दिखता है। Gemini के लिए Netlify पर GEMINI_API_KEY और AI टॉगल चालू करें।',
+      'सामान्य विषयों के लिए यहाँ विकिपीडिया दिखता है।',
     contact:
       'ईमेल: viveklpu008@gmail.com — या इस साइट पर Contact फ़ॉर्म भरें।',
     hello_greet:
@@ -757,7 +757,7 @@ const CHAT_I18N = {
       'Ye solve nahi hua. Try: numbers, + - * / ^ %, brackets, sqrt(16), pow(2,8), log(100), pi, e.',
     wiki_miss: 'Wikipedia pe clear match nahi mila. Alag words try karo ya neeche links use karo.',
     intro_default:
-      "Hi! Vivek ke skills, projects, education ke baare mein pucho. Baaki topics ke liye Wikipedia yahin load hota hai. AI on = optional Gemini polish (Netlify pe key).",
+      "Hi! Vivek ke skills, projects, education ke baare mein pucho. Baaki topics ke liye Wikipedia yahin load hota hai.",
     identity:
       "Main Vivek Sharma — 18 saal, B.Tech CSE student LPU mein. Goal: skilled software developer banna!",
     project:
@@ -765,10 +765,10 @@ const CHAT_I18N = {
     skill: 'Skills: C, Python, HTML, CSS, JS. Problem-solving + consistency strong hai.',
     education: 'Abhi LPU se B.Tech CSE kar raha hoon.',
     gemini_help:
-      'General topics ke liye Wikipedia yahin. Gemini polish ke liye Netlify pe GEMINI_API_KEY + AI on.',
+      'General topics ke liye Wikipedia yahin.',
     contact: 'Email: viveklpu008@gmail.com — ya Contact form use karo.',
     hello_greet:
-      'Hello! Vivek ke skills / projects / education pucho. Baaki Wikipedia in-chat; AI = optional Gemini.',
+      'Hello! Vivek ke skills / projects / education pucho. Baaki Wikipedia in-chat.',
   },
 };
 
@@ -1064,7 +1064,7 @@ const CHAT_TITLE_FULL = 'Vivek AI Assistant';
 let chatTitleAnimToken = 0;
 
 function isChatAIOpen() {
-  return !!(chatAIToggleEl && chatAIToggleEl.checked);
+  return false;
 }
 
 function startChatbotTitleAnimation() {
@@ -1411,9 +1411,7 @@ async function respondChat(val, opId, signal) {
 
   const wikiLink = escapeHtml(wiki.pageUrl);
   const googleLink = escapeHtml(googleUrl);
-  const attrLine = usedGemini
-    ? `<p class="chat-attribution">Information provided using Wikipedia as the source, with wording help from <strong>Google Gemini</strong>. Always verify important facts. Open article: <a href="${wikiLink}" target="_blank" rel="noopener noreferrer">Wikipedia</a> · Broader web: <a href="${googleLink}" target="_blank" rel="noopener noreferrer">Google Search</a>.</p>`
-    : `<p class="chat-attribution">Information provided from <strong>Wikipedia</strong> (open web). Broader results: <a href="${googleLink}" target="_blank" rel="noopener noreferrer">Google Search</a> · <a href="${wikiLink}" target="_blank" rel="noopener noreferrer">Article</a>.</p>`;
+  const attrLine = `<p class="chat-attribution">Information provided from <strong>Wikipedia</strong> (open web). Broader results: <a href="${googleLink}" target="_blank" rel="noopener noreferrer">Google Search</a> · <a href="${wikiLink}" target="_blank" rel="noopener noreferrer">Article</a>.</p>`;
 
   const msgDiv = document.createElement('div');
   msgDiv.className = 'message bot-message';

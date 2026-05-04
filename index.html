@@ -325,7 +325,7 @@
         </div>
 
         <div class="contact-form-section">
-          <form id="contact-form" name="contact" method="POST" data-netlify="true" onsubmit="handleContactSubmit(event)">
+          <form id="contact-form" name="contact" method="POST" onsubmit="handleContactSubmit(event)">
             <input type="hidden" name="form-name" value="contact" />
             <div class="form-group">
               <label for="contact-name">Your Name</label>
@@ -397,10 +397,6 @@
           <span class="chatbot-title-icon"><i class="fas fa-robot"></i></span>
           <span class="chatbot-title-text" id="chatbot-title-text" aria-live="polite"></span>
         </div>
-        <label class="chatbot-web-toggle" title="When on, tries to shorten the Wikipedia answer with Google Gemini (optional GEMINI_API_KEY on Netlify)">
-          <input type="checkbox" id="chatbot-ai-toggle" checked>
-          <span class="chatbot-web-toggle-ui"><i class="fas fa-wand-magic-sparkles"></i> AI</span>
-        </label>
       </div>
       <button type="button" id="chatbot-close" aria-label="Close chat"><i class="fas fa-times"></i></button>
     </div>
@@ -421,7 +417,7 @@
       </div>
     </div>
     <div class="chatbot-messages" id="chatbot-messages">
-      <div class="message bot-message" id="chatbot-intro-msg">Hi! Ask about Vivek’s skills, projects, or education. For anything else I pull a Wikipedia summary into this chat. Turn AI on to optionally polish it with Google Gemini (needs GEMINI_API_KEY on Netlify).</div>
+      <div class="message bot-message" id="chatbot-intro-msg">Hi! Ask about Vivek’s skills, projects, or education. For anything else I pull a Wikipedia summary into this chat.</div>
     </div>
     <div class="chatbot-quick-actions">
       <button class="quick-btn" onclick="sendQuickMessage('Who is Vivek?')">Who is Vivek?</button>

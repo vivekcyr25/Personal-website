@@ -1,4 +1,0 @@
-[build]
-  publish = "frontend"
-  functions = "netlify/functions"
-
