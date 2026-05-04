@@ -649,54 +649,39 @@ function handleContactSubmit(e) {
   e.preventDefault();
   const btn = document.getElementById('submit-btn-text');
   const status = document.getElementById('form-status');
-  
-  // Basic validation
-  const name = document.getElementById('contact-name').value;
-  const email = document.getElementById('contact-email').value;
-  const message = document.getElementById('contact-message').value;
-  
-  if(!name || !email || !message) return;
 
-  // Loading state
+  const name = document.getElementById('contact-name').value.trim();
+  const email = document.getElementById('contact-email').value.trim();
+  const message = document.getElementById('contact-message').value.trim();
+
+  if (!name || !email || !message) return;
+
   const originalBtnContent = btn.innerHTML;
-  btn.innerHTML = '<span>Sending...</span> <i class="fas fa-circle-notch fa-spin"></i>';
+  btn.innerHTML = '<span>Preparing message...</span> <i class="fas fa-circle-notch fa-spin"></i>';
   btn.style.opacity = '0.8';
   btn.style.pointerEvents = 'none';
 
-  const form = document.getElementById('contact-form');
-  const formData = new FormData(form);
+  const subject = encodeURIComponent('Contact from portfolio website');
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+  const mailtoUrl = `mailto:viveklpu008@gmail.com?subject=${subject}&body=${body}`;
 
-  fetch('/', {
-    method: 'POST',
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams(formData).toString()
-  })
-  .then(() => {
-    // Reset btn
-    btn.innerHTML = originalBtnContent;
-    btn.style.opacity = '1';
-    btn.style.pointerEvents = 'auto';
+  // For GitHub Pages and static hosting, we open the user's email client instead of posting to a server.
+  window.location.href = mailtoUrl;
 
-    // Show success msg
-    status.textContent = "Message sent successfully!";
-    status.className = "form-status success";
-    
-    // Reset form
-    form.reset();
+  btn.innerHTML = originalBtnContent;
+  btn.style.opacity = '1';
+  btn.style.pointerEvents = 'auto';
+  status.innerHTML =
+    'Your email client should open now. If it does not, please email <a href="mailto:viveklpu008@gmail.com">viveklpu008@gmail.com</a> directly.';
+  status.className = 'form-status success';
 
-    // Hide status after 5s
+  setTimeout(() => {
+    status.style.opacity = '0';
     setTimeout(() => {
-      status.style.opacity = '0';
-      setTimeout(() => { status.className = "form-status"; status.textContent = ""; }, 300);
-    }, 5000);
-  })
-  .catch((error) => {
-    btn.innerHTML = originalBtnContent;
-    btn.style.opacity = '1';
-    btn.style.pointerEvents = 'auto';
-    status.textContent = "Error sending message. Please try again.";
-    status.className = "form-status error";
-  });
+      status.className = 'form-status';
+      status.textContent = '';
+    }, 300);
+  }, 8000);
 }
 
 /* ─── AI CHATBOT LOGIC ─── */
