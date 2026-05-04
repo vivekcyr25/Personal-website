@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Website - Vivek Sharma</title>
+    <link rel="stylesheet" href="todo-style.css">
+    <style>
+        .home-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .home-content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .home-content h1 {
+            margin-bottom: 20px;
+        }
+        .home-content p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .projects {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .project-link {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .project-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="home-container">
+            <div class="home-content">
+                <h1>👋 Welcome to My Personal Website</h1>
+                <p>
+                    Hi! I'm <strong>Vivek Sharma</strong>, a Computer Science student committed to continuous learning and self-improvement.
+                </p>
+                <p>This site showcases my projects and learning journey.</p>
+                
+                <div class="projects">
+                    <h2 style="color: #333; margin-bottom: 20px;">📂 My Projects</h2>
+                    <a href="todo-app.html" class="project-link">✓ To-Do List Application</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
