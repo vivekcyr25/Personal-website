@@ -662,27 +662,25 @@ async function handleContactSubmit(e) {
   btn.style.pointerEvents = 'none';
 
   try {
-    // Using Formspree - No custom backend needed!
     const response = await fetch(e.target.action, {
       method: 'POST',
+      body: new URLSearchParams(new FormData(e.target)),
       headers: {
-        'Accept': 'application/json',
-      },
-      body: new FormData(e.target),
+        'Accept': 'application/json'
+      }
     });
-
-    const result = await response.json();
 
     if (response.ok) {
       status.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.';
       status.className = 'form-status success';
       document.getElementById('contact-form').reset();
     } else {
-      throw new Error(result.error || 'Something went wrong');
+      const result = await response.json();
+      throw new Error(result.errors ? result.errors.map(e => e.message).join(', ') : 'Submission failed');
     }
   } catch (error) {
     console.error('Submission error:', error);
-    status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Oops! Failed to send message. Please try again or email directly.';
+    status.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Oops! ${error.message}. Please try again.`;
     status.className = 'form-status error';
   } finally {
     btn.innerHTML = originalBtnContent;
