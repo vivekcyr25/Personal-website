@@ -1281,12 +1281,10 @@ footer span { color: var(--neon-green); }
 
 /* ─── AI CHATBOT ─── */
 #chatbot-container {
-  position: relative;
-  max-width: 1000px;
-  margin: 18px auto 26px;
-  display: flex;
-  justify-content: flex-end;
-  z-index: 10;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 9999;
   font-family: 'Chakra Petch', 'Rajdhani', sans-serif;
   cursor: auto;
   pointer-events: auto;
