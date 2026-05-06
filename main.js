@@ -116,9 +116,9 @@ function resize() {
 resize();
 window.addEventListener('resize', resize);
 
-// Stars
-const STAR_COUNT = IS_EDGE_BROWSER ? 700 : 1350;
-const STAR_INTERACTION_RADIUS = 170;
+// Stars - Reduced for performance
+const STAR_COUNT = IS_EDGE_BROWSER ? 400 : 850;
+const STAR_INTERACTION_RADIUS = 150;
 const stars = Array.from({length: STAR_COUNT}, () => ({
   x: Math.random() * 2000 - 1000,
   y: Math.random() * 2000 - 1000,
@@ -133,8 +133,8 @@ const stars = Array.from({length: STAR_COUNT}, () => ({
   offsetY: 0,
 }));
 
-// Nebula clouds
-const NEBULA_COUNT = IS_EDGE_BROWSER ? 4 : 6;
+// Nebula clouds - Reduced for performance
+const NEBULA_COUNT = IS_EDGE_BROWSER ? 3 : 5;
 const nebulae = Array.from({length: NEBULA_COUNT}, (_, i) => ({
   x: Math.random() * W,
   y: Math.random() * H,
