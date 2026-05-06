@@ -1333,7 +1333,72 @@ function getLocalAIResponse(raw) {
   const x = normalizeQueryForMatch(raw);
   const r = String(raw || '');
 
-  // Keep only basic greetings for instant feel, let Gemini handle the rest
+  const asksPortfolio =
+    x.includes('vivek') ||
+    r.includes('विवेक') ||
+    x.includes('portfolio') ||
+    x.includes('this site') ||
+    x.includes('your site') ||
+    x.includes('website') ||
+    r.includes('पोर्टफोलियो');
+
+  const asksIdentity =
+    (asksPortfolio &&
+      (x.includes('who') || x.includes('about') || x.includes('name'))) ||
+    (x.includes('who') && (x.includes('you') || x.includes('are you'))) ||
+    x.includes('your name') ||
+    x.includes('his name') ||
+    (x.includes('name') && (x.includes('vivek') || r.includes('विवेक'))) ||
+    (r.includes('विवेक') && (r.includes('कौन') || r.includes('क्या'))) ||
+    (x.includes('kaun') && x.includes('vivek')) ||
+    (x.includes('kon') && x.includes('hai') && x.includes('vivek'));
+
+  if (asksIdentity) {
+    return tChat('identity');
+  }
+  if (
+    x.includes('project') ||
+    x.includes('built') ||
+    x.includes('made') ||
+    x.includes('banaya') ||
+    r.includes('प्रोजेक्ट')
+  ) {
+    return tChat('project');
+  }
+  if (
+    x.includes('skill') ||
+    x.includes('know') ||
+    x.includes('tech') ||
+    r.includes('स्किल') ||
+    x.includes('kaun si language')
+  ) {
+    return tChat('skill');
+  }
+  if (
+    x.includes('education') ||
+    x.includes('study') ||
+    x.includes('university') ||
+    x.includes('college') ||
+    x.includes('lpu') ||
+    r.includes('पढ़ाई') ||
+    r.includes('यूनिवर्सिटी') ||
+    x.includes('padhai')
+  ) {
+    return tChat('education');
+  }
+  if (
+    x.includes('contact') ||
+    x.includes('email') ||
+    x.includes('reach') ||
+    x.includes('hire') ||
+    r.includes('संपर्क') ||
+    r.includes('ईमेल') ||
+    x.includes('mail karo')
+  ) {
+    return tChat('contact');
+  }
+
+  // Greetings
   if (
     x.startsWith('hi') ||
     x.startsWith('hello') ||
