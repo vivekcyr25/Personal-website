@@ -1281,13 +1281,19 @@ footer span { color: var(--neon-green); }
 
 /* ─── AI CHATBOT ─── */
 #chatbot-container {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  z-index: 9999;
+  position: relative;
+  max-width: 1000px;
+  margin: 18px auto 26px;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 10;
   font-family: 'Chakra Petch', 'Rajdhani', sans-serif;
   cursor: auto;
   pointer-events: auto;
+}
+.chatbot-toggle:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 40px rgba(0, 255, 136, 0.6);
 }
 .chatbot-toggle { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--neon-green), var(--neon-blue)); border: none; color: #000; font-size: 24px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,255,136,0.3); transition: transform 0.3s, box-shadow 0.3s; display: flex; align-items: center; justify-content: center; }
 .chatbot-toggle:hover { transform: scale(1.1); box-shadow: 0 15px 40px rgba(0,255,136,0.5); }

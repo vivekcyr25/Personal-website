@@ -1112,6 +1112,14 @@ window.addEventListener('load', () => {
   }, 2500);
 });
 
+// Added: Show tooltip on hover
+chatbotToggle.addEventListener('mouseenter', () => {
+  const tt = document.getElementById('chatbot-tooltip');
+  if (tt && !chatbotWindow.classList.contains('open')) {
+    tt.classList.add('show');
+  }
+});
+
 chatbotToggle.addEventListener('click', () => {
   closeChatTooltip();
   chatbotToggle.style.transform = 'scale(0)';
