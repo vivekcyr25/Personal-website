@@ -1229,7 +1229,7 @@ function buildGoogleSearchUrl(query) {
 /** Call local backend for Gemini AI response */
 async function fetchGeminiChat(message, signal) {
   try {
-    const res = await fetch('http://localhost:5000/api/chat', {
+    const res = await fetch('https://vivek-ai-backend.onrender.com/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message }),
