@@ -33,7 +33,7 @@ try:
     print(f"\n⚙️  To enable GitHub Pages:")
     print(f"1. Go to: https://github.com/{username}/{repo_name}/settings/pages")
     print(f"2. Select 'main' branch")
-    print(f"3. Select '/frontend' folder")
+    print(f"3. Select '/(root)' folder")
     print(f"4. Click Save")
     print(f"\n✨ Your website will be live at: https://{username}.github.io/{repo_name}/")
     
