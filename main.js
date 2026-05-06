@@ -709,9 +709,9 @@ const CHAT_I18N = {
     calc_prefix: 'Result:',
     calc_err:
       'Could not evaluate that expression. Use digits, + − * / ^ %, parentheses, or sqrt(16), sin(0.5), pow(2,8), log(100), pi, e.',
-    wiki_miss: 'No clear Wikipedia match. Try different words or use the links below.',
+    wiki_miss: 'Gemini AI is currently busy. Please try again in a moment!',
     intro_default:
-      "Hi! Ask about Vivek's skills, projects, or education. For other topics I load Wikipedia here.",
+      "Hi! Ask about Vivek's skills, projects, or education. For other topics I use Gemini AI.",
     identity:
       "I'm Vivek Sharma, an 18-year-old B.Tech CSE student at Lovely Professional University. My goal is to become a skilled software developer!",
     project:
@@ -721,20 +721,20 @@ const CHAT_I18N = {
     education:
       "I'm pursuing B.Tech Computer Science Engineering at Lovely Professional University (LPU).",
     gemini_help:
-      'For general topics I show Wikipedia here.',
+      'I am powered by Google Gemini AI to provide you with the best assistance.',
     contact:
       'Email: viveklpu008@gmail.com — or use the Contact form on this site.',
     hello_greet:
-      "Hello! Ask about Vivek's skills, projects, or education. Other questions use Wikipedia in-chat.",
+      "Hello! Ask about Vivek's skills, projects, or education. For other questions, I'm here as your Gemini AI assistant.",
   },
   hi: {
     stopped: 'रोका गया।',
     calc_prefix: 'परिणाम:',
     calc_err:
       'इसे हल नहीं कर सका। अंक, + − * / ^ %, कोष्ठक, या sqrt(16), pow(2,8), log(100), pi, e आदि इस्तेमाल करें।',
-    wiki_miss: 'विकिपीडिया पर साफ़ मेल नहीं मिला। शब्द बदलकर देखें या नीचे लिंक उपयोग करें।',
+    wiki_miss: 'Gemini AI अभी व्यस्त है। कृपया थोड़ी देर बाद फिर से कोशिश करें!',
     intro_default:
-      'नमस्ते! विवेक के बारे में, स्किल्स, प्रोजेक्ट या पढ़ाई पूछें। बाकी विषयों के लिए यहाँ विकिपीडिया सार मिलेगा।',
+      'नमस्ते! विवेक के बारे में, स्किल्स, प्रोजेक्ट या पढ़ाई पूछें। बाकी विषयों के लिए यहाँ Gemini AI मदद करेगा।',
     identity:
       'मैं विवेक शर्मा हूँ — लवली प्रोफेशनल यूनिवर्सिटी में B.Tech CSE का छात्र। मेरा लक्ष्य एक कुशल सॉफ्टवेयर डेवलपर बनना है!',
     project:
@@ -743,20 +743,20 @@ const CHAT_I18N = {
       'स्किल्स: C, Python, HTML, CSS, JavaScript — समस्या सुलझाना और लगातार सीखना।',
     education: 'मैं लवली प्रोफेशनल यूनिवर्सिटी (LPU) से B.Tech CSE कर रहा हूँ।',
     gemini_help:
-      'सामान्य विषयों के लिए यहाँ विकिपीडिया दिखता है।',
+      'मैं आपको बेहतरीन सहायता प्रदान करने के लिए Google Gemini AI द्वारा संचालित हूँ।',
     contact:
       'ईमेल: viveklpu008@gmail.com — या इस साइट पर Contact फ़ॉर्म भरें।',
     hello_greet:
-      'नमस्ते! विवेक की स्किल्स, प्रोजेक्ट या पढ़ाई पूछें। बाकी सवालों पर विकिपीडिया यहीं दिखेगा।',
+      'नमस्ते! विवेक की स्किल्स, प्रोजेक्ट या पढ़ाई पूछें। बाकी सवालों के लिए मैं आपका Gemini AI असिस्टेंट हूँ।',
   },
   hing: {
     stopped: 'Stop ho gaya.',
     calc_prefix: 'Answer:',
     calc_err:
       'Ye solve nahi hua. Try: numbers, + - * / ^ %, brackets, sqrt(16), pow(2,8), log(100), pi, e.',
-    wiki_miss: 'Wikipedia pe clear match nahi mila. Alag words try karo ya neeche links use karo.',
+    wiki_miss: 'Gemini AI abhi busy hai. Thodi der baad try karein!',
     intro_default:
-      "Hi! Vivek ke skills, projects, education ke baare mein pucho. Baaki topics ke liye Wikipedia yahin load hota hai.",
+      "Hi! Vivek ke skills, projects, education ke baare mein pucho. Baaki topics ke liye Gemini AI yahin help karega.",
     identity:
       "Main Vivek Sharma — 18 saal, B.Tech CSE student LPU mein. Goal: skilled software developer banna!",
     project:
@@ -764,10 +764,10 @@ const CHAT_I18N = {
     skill: 'Skills: C, Python, HTML, CSS, JS. Problem-solving + consistency strong hai.',
     education: 'Abhi LPU se B.Tech CSE kar raha hoon.',
     gemini_help:
-      'General topics ke liye Wikipedia yahin.',
+      'Main Google Gemini AI se powered hoon taaki aapki best help kar sakun.',
     contact: 'Email: viveklpu008@gmail.com — ya Contact form use karo.',
     hello_greet:
-      'Hello! Vivek ke skills / projects / education pucho. Baaki Wikipedia in-chat.',
+      'Hello! Vivek ke skills / projects / education pucho. Baaki ke liye main aapka Gemini AI assistant hoon.',
   },
 };
 
@@ -1063,7 +1063,7 @@ const CHAT_TITLE_FULL = 'Vivek AI Assistant';
 let chatTitleAnimToken = 0;
 
 function isChatAIOpen() {
-  return false;
+  return true;
 }
 
 function startChatbotTitleAnimation() {
@@ -1171,7 +1171,7 @@ function scrollChatToEnd() {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-async function typewriterIntoElement(el, text, cps = 38, signal) {
+async function typewriterIntoElement(el, text, cps = 95, signal) {
   if (!el) return;
   const base = 1000 / cps;
   el.textContent = '';
@@ -1182,11 +1182,11 @@ async function typewriterIntoElement(el, text, cps = 38, signal) {
     }
     el.textContent = text.slice(0, i);
     scrollChatToEnd();
-    await new Promise((r) => setTimeout(r, base + Math.random() * 18));
+    await new Promise((r) => setTimeout(r, base + Math.random() * 4));
   }
 }
 
-async function appendBotPlainTyped(text, cps = 38, signal) {
+async function appendBotPlainTyped(text, cps = 95, signal) {
   const msgDiv = document.createElement('div');
   msgDiv.className = 'message bot-message';
   chatMessages.appendChild(msgDiv);
@@ -1194,7 +1194,7 @@ async function appendBotPlainTyped(text, cps = 38, signal) {
   scrollChatToEnd();
 }
 
-function showBotThinking(label = 'Searching Google') {
+function showBotThinking(label = 'AI is thinking') {
   const msgDiv = document.createElement('div');
   msgDiv.className = 'message bot-message bot-message--typing';
   msgDiv.innerHTML = `<span class="chat-thinking">${escapeHtml(label)}<span class="chat-thinking-dots"><i></i><i></i><i></i></span></span>`;
@@ -1207,7 +1207,7 @@ function removeNodeIfThinking(node) {
   if (node && node.parentNode) node.parentNode.removeChild(node);
 }
 
-async function appendBotIntroThenHtml(introPlain, htmlFragment, cps = 40) {
+async function appendBotIntroThenHtml(introPlain, htmlFragment, cps = 95) {
   const msgDiv = document.createElement('div');
   msgDiv.className = 'message bot-message';
   const intro = document.createElement('p');
@@ -1225,73 +1225,27 @@ function buildGoogleSearchUrl(query) {
   return `https://www.google.com/search?q=${encodeURIComponent(String(query).trim())}`;
 }
 
-function buildWikipediaSearchUrl(query) {
-  return `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(String(query).trim())}`;
-}
 
-/**
- * Public Wikipedia summary via MediaWiki API (browser CORS with origin=*).
- * @returns {Promise<{ title: string, extract: string, pageUrl: string }|null>}
- */
-async function fetchWikipediaSummary(query, signal) {
-  const q = String(query).trim();
-  if (!q) return null;
-
-  const searchParams = new URLSearchParams({
-    action: 'query',
-    format: 'json',
-    origin: '*',
-    list: 'search',
-    srsearch: q,
-    srlimit: '1',
-  });
-  const sres = await fetch(`https://en.wikipedia.org/w/api.php?${searchParams}`, { signal });
-  const sdata = await sres.json();
-  const hits = sdata.query && sdata.query.search;
-  if (!hits || !hits.length) return null;
-
-  const title = hits[0].title;
-  const extractParams = new URLSearchParams({
-    action: 'query',
-    format: 'json',
-    origin: '*',
-    prop: 'extracts',
-    exintro: '1',
-    explaintext: '1',
-    exchars: '2000',
-    titles: title,
-  });
-  const eres = await fetch(`https://en.wikipedia.org/w/api.php?${extractParams}`, { signal });
-  const edata = await eres.json();
-  const pages = edata.query && edata.query.pages;
-  if (!pages) return null;
-  const page = Object.values(pages)[0];
-  if (!page || page.missing) {
-    return { title, extract: '', pageUrl: buildWikipediaSearchUrl(q) };
-  }
-  const extract = page.extract ? String(page.extract).trim() : '';
-  const pageUrl =
-    page.pageid != null
-      ? `https://en.wikipedia.org/?curid=${page.pageid}`
-      : buildWikipediaSearchUrl(q);
-  return { title, extract, pageUrl };
-}
-
-/** Optional Netlify function: Gemini rewrite of Wikipedia excerpt */
-async function fetchGeminiEnrich(query, context, signal) {
+/** Call local backend for Gemini AI response */
+async function fetchGeminiChat(message, signal) {
   try {
-    const res = await fetch('/.netlify/functions/gemini-enrich', {
+    const res = await fetch('http://localhost:5000/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query, context }),
+      body: JSON.stringify({ message }),
       signal,
     });
-    const data = await res.json().catch(() => ({}));
-    if (data && data.configured && data.text) {
-      return { text: String(data.text).trim() };
+    const data = await res.json();
+    if (data && data.reply) {
+      return { text: String(data.reply).trim() };
     }
+    if (res.status === 429) {
+      throw new Error('RATE_LIMIT');
+    }
+    throw new Error(data.error || 'Failed to get AI response');
   } catch (e) {
     if (e && e.name === 'AbortError') throw e;
+    console.error('Chat API Error:', e);
   }
   return null;
 }
@@ -1327,7 +1281,7 @@ function sendChatMessage() {
   activeChatAbort = ac;
   setStopButtonVisible(true);
 
-  const delay = 520 + Math.random() * 380;
+  const delay = 320 + Math.random() * 200;
   setTimeout(() => {
     void respondChat(val, opId, ac.signal).finally(() => {
       if (isStaleOp(opId)) return;
@@ -1340,84 +1294,48 @@ function sendChatMessage() {
 async function respondChat(val, opId, signal) {
   if (isStaleOp(opId)) return;
 
+  // 1. Math check
   const calcResult = tryEvaluateMathExpression(val);
   if (calcResult) {
     if (isStaleOp(opId)) return;
-    await appendBotPlainTyped(calcResult, 42, signal);
+    await appendBotPlainTyped(calcResult, 95, signal);
     return;
   }
 
-  if (isStaleOp(opId)) return;
+  // 2. Local site knowledge check (optional, but keep for speed)
   const local = getLocalAIResponse(val);
   if (local) {
     if (isStaleOp(opId)) return;
-    await appendBotPlainTyped(local, 40, signal);
+    await appendBotPlainTyped(local, 85, signal);
     return;
   }
 
+  // 3. Gemini AI Response
   if (isStaleOp(opId)) return;
-  const googleUrl = buildGoogleSearchUrl(val);
-  const thinking = showBotThinking('Looking up Wikipedia…');
-  let wiki = null;
+  const thinking = showBotThinking('Consulting Gemini AI…');
+  
   try {
-    wiki = await fetchWikipediaSummary(val, signal);
+    const aiResponse = await fetchGeminiChat(val, signal);
+    removeNodeIfThinking(thinking);
+    
+    if (isStaleOp(opId)) return;
+    
+    if (aiResponse && aiResponse.text) {
+      await appendBotPlainTyped(aiResponse.text, 95, signal);
+    } else {
+      await appendBotPlainTyped(tChat('wiki_miss'), 80, signal);
+    }
   } catch (e) {
     removeNodeIfThinking(thinking);
     if (e && e.name === 'AbortError') return;
-    wiki = null;
-  }
-  removeNodeIfThinking(thinking);
-  if (isStaleOp(opId)) return;
-
-  if (!wiki || !wiki.extract) {
-    await appendBotPlainTyped(tChat('wiki_miss'), 36, signal);
-    if (isStaleOp(opId)) return;
-    const wikiUrl = buildWikipediaSearchUrl(val);
-    appendMessage(
-      `<div class="chat-web-links">` +
-        `<a class="chat-web-btn" href="${googleUrl}" target="_blank" rel="noopener noreferrer">Google Search — ${escapeHtml(val)}</a>` +
-        `<a class="chat-web-btn chat-web-btn--wiki" href="${wikiUrl}" target="_blank" rel="noopener noreferrer">Wikipedia search — ${escapeHtml(val)}</a>` +
-        `</div>`,
-      'bot',
-      { html: true }
-    );
-    return;
-  }
-
-  let bodyText = wiki.extract;
-  let usedGemini = false;
-  if (isChatAIOpen()) {
-    const thinkingAi = showBotThinking('Polishing with Google Gemini…');
-    try {
-      const enriched = await fetchGeminiEnrich(val, wiki.extract, signal);
-      removeNodeIfThinking(thinkingAi);
-      if (enriched && enriched.text) {
-        bodyText = enriched.text;
-        usedGemini = true;
-      }
-    } catch (e) {
-      removeNodeIfThinking(thinkingAi);
-      if (e && e.name === 'AbortError') return;
+    
+    let errMsg = "I'm having trouble connecting to my AI brain. Please try again in a moment!";
+    if (e.message === 'RATE_LIMIT') {
+      errMsg = "I've been talking a lot lately and need a short break (Rate Limit). Please try again in 30 seconds!";
     }
+    
+    await appendBotPlainTyped(errMsg, 80, signal);
   }
-
-  if (isStaleOp(opId)) return;
-
-  const maxLen = 1600;
-  if (bodyText.length > maxLen) {
-    bodyText = `${bodyText.slice(0, maxLen - 1)}…`;
-  }
-
-  const wikiLink = escapeHtml(wiki.pageUrl);
-  const googleLink = escapeHtml(googleUrl);
-  const attrLine = `<p class="chat-attribution">Information provided from <strong>Wikipedia</strong> (open web). Broader results: <a href="${googleLink}" target="_blank" rel="noopener noreferrer">Google Search</a> · <a href="${wikiLink}" target="_blank" rel="noopener noreferrer">Article</a>.</p>`;
-
-  const msgDiv = document.createElement('div');
-  msgDiv.className = 'message bot-message';
-  chatMessages.appendChild(msgDiv);
-  await typewriterIntoElement(msgDiv, bodyText, 44, signal);
-  if (isStaleOp(opId) || (signal && signal.aborted)) return;
-  msgDiv.insertAdjacentHTML('beforeend', attrLine);
   scrollChatToEnd();
 }
 
@@ -1426,81 +1344,13 @@ function getLocalAIResponse(raw) {
   const x = normalizeQueryForMatch(raw);
   const r = String(raw || '');
 
-  const asksPortfolio =
-    x.includes('vivek') ||
-    r.includes('विवेक') ||
-    x.includes('portfolio') ||
-    x.includes('this site') ||
-    x.includes('your site') ||
-    x.includes('website') ||
-    r.includes('पोर्टफोलियो');
-
-  const asksIdentity =
-    (asksPortfolio &&
-      (x.includes('who') || x.includes('about') || x.includes('name'))) ||
-    (x.includes('who') && (x.includes('you') || x.includes('are you'))) ||
-    x.includes('your name') ||
-    x.includes('his name') ||
-    (x.includes('name') && (x.includes('vivek') || r.includes('विवेक'))) ||
-    (r.includes('विवेक') && (r.includes('कौन') || r.includes('क्या'))) ||
-    (x.includes('kaun') && x.includes('vivek')) ||
-    (x.includes('kon') && x.includes('hai') && x.includes('vivek'));
-
-  if (asksIdentity) {
-    return tChat('identity');
-  }
+  // Keep only basic greetings for instant feel, let Gemini handle the rest
   if (
-    x.includes('project') ||
-    x.includes('built') ||
-    x.includes('made') ||
-    x.includes('banaya') ||
-    r.includes('प्रोजेक्ट')
-  ) {
-    return tChat('project');
-  }
-  if (
-    x.includes('skill') ||
-    x.includes('know') ||
-    x.includes('tech') ||
-    r.includes('स्किल') ||
-    x.includes('kaun si language')
-  ) {
-    return tChat('skill');
-  }
-  if (
-    x.includes('education') ||
-    x.includes('study') ||
-    x.includes('university') ||
-    x.includes('college') ||
-    x.includes('lpu') ||
-    r.includes('पढ़ाई') ||
-    r.includes('यूनिवर्सिटी') ||
-    x.includes('padhai')
-  ) {
-    return tChat('education');
-  }
-  if (x.includes('gemini') || x.includes('chatgpt') || x.includes('openai')) {
-    return tChat('gemini_help');
-  }
-  if (
-    x.includes('contact') ||
-    x.includes('email') ||
-    x.includes('reach') ||
-    x.includes('hire') ||
-    r.includes('संपर्क') ||
-    r.includes('ईमेल') ||
-    x.includes('mail karo')
-  ) {
-    return tChat('contact');
-  }
-  if (
-    x.includes('hi') ||
-    x.includes('hello') ||
-    x.includes('hey') ||
-    r.includes('नमस्ते') ||
-    r.includes('नमस्कार') ||
+    x.startsWith('hi') ||
+    x.startsWith('hello') ||
+    x.startsWith('hey') ||
     x.includes('namaste') ||
-    x.includes('namaskar')
+    x.includes('namskar')
   ) {
     return tChat('hello_greet');
   }

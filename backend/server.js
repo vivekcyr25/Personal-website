@@ -1,7 +1,9 @@
 const express = require('express');
+const path = require('path');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 dotenv.config();
 
@@ -11,6 +13,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '..')));
 
 // Nodemailer Transporter Setup
 const transporter = nodemailer.createTransport({
@@ -30,7 +33,32 @@ transporter.verify(function (error, success) {
   }
 });
 
+// Gemini AI Setup
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ 
+  model: "gemini-flash-latest",
+  systemInstruction: "You are the AI assistant for Vivek Sharma's portfolio website. Vivek is an 18-year-old B.Tech CSE student at Lovely Professional University. He is an aspiring software developer. \n\nCORE RULES:\n1. Be concise and professional.\n2. Do NOT repeat your full introduction in every message. Only mention you are Vivek's assistant if it's the start of the conversation or specifically asked.\n3. Answer questions about Vivek's skills (C, Python, HTML, CSS, JavaScript), projects (Student Marks Portal), and education directly.\n4. If asked about unrelated topics (e.g., space, math, general facts), answer them briefly and accurately using your general knowledge. You don't always have to link it back to the portfolio unless it makes sense.\n5. Use English, Hindi, or Hinglish based on the user's input.",
+});
+
 // Routes
+app.post('/api/chat', async (req, res) => {
+  const { message } = req.body;
+
+  if (!message) {
+    return res.status(400).json({ error: 'Message is required.' });
+  }
+
+  try {
+    const result = await model.generateContent(message);
+    const response = await result.response;
+    const text = response.text();
+    res.status(200).json({ reply: text });
+  } catch (error) {
+    console.error('Gemini AI Error:', error);
+    res.status(500).json({ error: 'AI failed to respond. Please try again.' });
+  }
+});
+
 app.post('/api/contact', async (req, res) => {
   const { name, email, message } = req.body;
 
