@@ -1112,12 +1112,17 @@ window.addEventListener('load', () => {
   }, 2500);
 });
 
-// Added: Show tooltip on hover
+// Added: Robust Hover pop-up
 chatbotToggle.addEventListener('mouseenter', () => {
   const tt = document.getElementById('chatbot-tooltip');
   if (tt && !chatbotWindow.classList.contains('open')) {
     tt.classList.add('show');
   }
+});
+
+// Re-show tooltip if mouse leaves and enters again
+chatbotToggle.addEventListener('mouseleave', () => {
+  // Optional: you could hide it here if you wanted it to ONLY show while hovering
 });
 
 chatbotToggle.addEventListener('click', () => {
