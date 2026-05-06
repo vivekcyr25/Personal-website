@@ -1102,7 +1102,6 @@ window.addEventListener('load', () => {
 });
 
 chatbotToggle.addEventListener('click', () => {
-  closeChatTooltip();
   chatbotToggle.style.transform = 'scale(0)';
   // Pop up again after 0.2s as requested.
   setTimeout(() => {
