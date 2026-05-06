@@ -1246,8 +1246,8 @@ async function fetchGeminiChat(message, signal) {
   } catch (e) {
     if (e && e.name === 'AbortError') throw e;
     console.error('Chat API Error:', e);
+    throw e; // Re-throw so respondChat's catch block can catch it
   }
-  return null;
 }
 
 function handleChatEnter(e) {
