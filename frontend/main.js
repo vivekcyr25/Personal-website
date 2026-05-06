@@ -645,7 +645,7 @@ window.addEventListener('scroll', () => {
 });
 
 /* ─── CONTACT FORM LOGIC ─── */
-function handleContactSubmit(e) {
+async function handleContactSubmit(e) {
   e.preventDefault();
   const btn = document.getElementById('submit-btn-text');
   const status = document.getElementById('form-status');
@@ -657,31 +657,47 @@ function handleContactSubmit(e) {
   if (!name || !email || !message) return;
 
   const originalBtnContent = btn.innerHTML;
-  btn.innerHTML = '<span>Preparing message...</span> <i class="fas fa-circle-notch fa-spin"></i>';
+  btn.innerHTML = '<span>Sending...</span> <i class="fas fa-circle-notch fa-spin"></i>';
   btn.style.opacity = '0.8';
   btn.style.pointerEvents = 'none';
 
-  const subject = encodeURIComponent('Contact from portfolio website');
-  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-  const mailtoUrl = `mailto:viveklpu008@gmail.com?subject=${subject}&body=${body}`;
+  try {
+    // Using Formspree - No custom backend needed!
+    const response = await fetch(e.target.action, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: new FormData(e.target),
+    });
 
-  // For GitHub Pages and static hosting, we open the user's email client instead of posting to a server.
-  window.location.href = mailtoUrl;
+    const result = await response.json();
 
-  btn.innerHTML = originalBtnContent;
-  btn.style.opacity = '1';
-  btn.style.pointerEvents = 'auto';
-  status.innerHTML =
-    'Your email client should open now. If it does not, please email <a href="mailto:viveklpu008@gmail.com">viveklpu008@gmail.com</a> directly.';
-  status.className = 'form-status success';
+    if (response.ok) {
+      status.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.';
+      status.className = 'form-status success';
+      document.getElementById('contact-form').reset();
+    } else {
+      throw new Error(result.error || 'Something went wrong');
+    }
+  } catch (error) {
+    console.error('Submission error:', error);
+    status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Oops! Failed to send message. Please try again or email directly.';
+    status.className = 'form-status error';
+  } finally {
+    btn.innerHTML = originalBtnContent;
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
 
-  setTimeout(() => {
-    status.style.opacity = '0';
     setTimeout(() => {
-      status.className = 'form-status';
-      status.textContent = '';
-    }, 300);
-  }, 8000);
+      status.style.opacity = '0';
+      setTimeout(() => {
+        status.className = 'form-status';
+        status.textContent = '';
+        status.style.opacity = '1';
+      }, 300);
+    }, 6000);
+  }
 }
 
 /* ─── AI CHATBOT LOGIC ─── */
