@@ -1097,32 +1097,8 @@ function resetChatbotIdleTimer() {
   }, CHATBOT_IDLE_MS);
 }
 
-function closeChatTooltip(e) {
-  if (e) e.stopPropagation();
-  const tt = document.getElementById('chatbot-tooltip');
-  if (tt) tt.classList.remove('show');
-}
-
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    const tt = document.getElementById('chatbot-tooltip');
-    if (tt && !chatbotWindow.classList.contains('open')) {
-      tt.classList.add('show');
-    }
-  }, 2500);
-});
-
-// Added: Robust Hover pop-up
-chatbotToggle.addEventListener('mouseenter', () => {
-  const tt = document.getElementById('chatbot-tooltip');
-  if (tt && !chatbotWindow.classList.contains('open')) {
-    tt.classList.add('show');
-  }
-});
-
-// Re-show tooltip if mouse leaves and enters again
-chatbotToggle.addEventListener('mouseleave', () => {
-  // Optional: you could hide it here if you wanted it to ONLY show while hovering
+  // Tooltip removed as requested
 });
 
 chatbotToggle.addEventListener('click', () => {
