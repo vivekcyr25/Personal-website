@@ -381,53 +381,55 @@
 
 <!-- ─── AI CHATBOT ─── -->
 <div id="chatbot-container">
-  <div id="chatbot-tooltip" class="chatbot-tooltip">
-    Hi! I am Vivek's Chatbot. What can I help you with today?
-    <button class="tooltip-close" onclick="closeChatTooltip(event)" aria-label="Close tooltip">&times;</button>
-  </div>
-  <button id="chatbot-toggle" class="chatbot-toggle">
-    <i class="fas fa-robot"></i>
-  </button>
-  
-  <div class="chatbot-window" id="chatbot-window">
-    <div class="chatbot-header">
-      <div class="chatbot-header-main">
-        <div class="chatbot-title">
-          <span class="chatbot-title-icon"><i class="fas fa-robot"></i></span>
-          <span class="chatbot-title-text" id="chatbot-title-text" aria-live="polite"></span>
+  <div class="chatbot-inner-wrapper">
+    <div id="chatbot-tooltip" class="chatbot-tooltip">
+      Hi! I am Vivek's Chatbot. What can I help you with today?
+      <button class="tooltip-close" onclick="closeChatTooltip(event)" aria-label="Close tooltip">&times;</button>
+    </div>
+    <button id="chatbot-toggle" class="chatbot-toggle">
+      <i class="fas fa-robot"></i>
+    </button>
+    
+    <div class="chatbot-window" id="chatbot-window">
+      <div class="chatbot-header">
+        <div class="chatbot-header-main">
+          <div class="chatbot-title">
+            <span class="chatbot-title-icon"><i class="fas fa-robot"></i></span>
+            <span class="chatbot-title-text" id="chatbot-title-text" aria-live="polite"></span>
+          </div>
+        </div>
+        <button type="button" id="chatbot-close" aria-label="Close chat"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="chatbot-toolbar" role="group" aria-label="Chat language selection">
+        <span class="chatbot-lang-icon" title="Choose reply language" aria-hidden="true"><i class="fas fa-language"></i></span>
+        <div class="chatbot-lang-field">
+          <label class="chatbot-lang-label" for="chatbot-lang">Choose language</label>
+          <select
+            id="chatbot-lang"
+            class="chatbot-lang-select"
+            title="English · हिंदी · हिंदी (Hinglish) — applies to bot replies and quick help text"
+            aria-label="Chat language: English, Hindi, or Hinglish"
+          >
+            <option value="en">English</option>
+            <option value="hi">हिंदी (Hindi)</option>
+            <option value="hing">Hinglish</option>
+          </select>
         </div>
       </div>
-      <button type="button" id="chatbot-close" aria-label="Close chat"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="chatbot-toolbar" role="group" aria-label="Chat language selection">
-      <span class="chatbot-lang-icon" title="Choose reply language" aria-hidden="true"><i class="fas fa-language"></i></span>
-      <div class="chatbot-lang-field">
-        <label class="chatbot-lang-label" for="chatbot-lang">Choose language</label>
-        <select
-          id="chatbot-lang"
-          class="chatbot-lang-select"
-          title="English · हिंदी · हिंदी (Hinglish) — applies to bot replies and quick help text"
-          aria-label="Chat language: English, Hindi, or Hinglish"
-        >
-          <option value="en">English</option>
-          <option value="hi">हिंदी (Hindi)</option>
-          <option value="hing">Hinglish</option>
-        </select>
+      <div class="chatbot-messages" id="chatbot-messages">
+        <div class="message bot-message" id="chatbot-intro-msg">Hi! Ask about Vivek’s skills, projects, or education. For anything else I pull a Wikipedia summary into this chat.</div>
       </div>
-    </div>
-    <div class="chatbot-messages" id="chatbot-messages">
-      <div class="message bot-message" id="chatbot-intro-msg">Hi! Ask about Vivek’s skills, projects, or education. For anything else I pull a Wikipedia summary into this chat.</div>
-    </div>
-    <div class="chatbot-quick-actions">
-      <button class="quick-btn" onclick="sendQuickMessage('Who is Vivek?')">Who is Vivek?</button>
-      <button class="quick-btn" onclick="sendQuickMessage('View Projects')">View Projects</button>
-      <button class="quick-btn" onclick="sendQuickMessage('Skills')">Skills</button>
-      <button class="quick-btn" onclick="sendQuickMessage('Contact Vivek')">Contact Vivek</button>
-    </div>
-    <div class="chatbot-input">
-      <input type="text" id="chat-input-field" placeholder="Ask me something..." onkeypress="handleChatEnter(event)">
-      <button type="button" id="chatbot-stop" class="chatbot-stop-btn" aria-label="Stop" title="Stop current reply" hidden><i class="fas fa-stop"></i></button>
-      <button type="button" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+      <div class="chatbot-quick-actions">
+        <button class="quick-btn" onclick="sendQuickMessage('Who is Vivek?')">Who is Vivek?</button>
+        <button class="quick-btn" onclick="sendQuickMessage('View Projects')">View Projects</button>
+        <button class="quick-btn" onclick="sendQuickMessage('Skills')">Skills</button>
+        <button class="quick-btn" onclick="sendQuickMessage('Contact Vivek')">Contact Vivek</button>
+      </div>
+      <div class="chatbot-input">
+        <input type="text" id="chat-input-field" placeholder="Ask me something..." onkeypress="handleChatEnter(event)">
+        <button type="button" id="chatbot-stop" class="chatbot-stop-btn" aria-label="Stop" title="Stop current reply" hidden><i class="fas fa-stop"></i></button>
+        <button type="button" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+      </div>
     </div>
   </div>
 </div>
@@ -445,7 +447,7 @@
   </div>
 </div>
 
-<script src="main.js?v=5">
+<script src="main.js?v=6">
 </script>
 </body>
 </html>

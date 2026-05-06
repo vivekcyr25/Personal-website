@@ -1288,8 +1288,10 @@ footer span { color: var(--neon-green); }
   justify-content: flex-end;
   z-index: 10;
   font-family: 'Chakra Petch', 'Rajdhani', sans-serif;
-  cursor: auto;
-  pointer-events: auto;
+}
+.chatbot-inner-wrapper {
+  position: relative;
+  display: inline-block;
 }
 .chatbot-toggle:hover {
   transform: scale(1.15);
