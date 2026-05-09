@@ -23,7 +23,8 @@ class AIConnectionMonitor {
 
   private listeners: Record<string, Listener[]> = {};
   private heartbeatInterval: any = null;
-  private readonly API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  private readonly API_URL = import.meta.env.VITE_API_URL || 
+                             (window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://personal-websiteneural-os-api.onrender.com');
 
   private constructor() {
     this.startHeartbeat();
