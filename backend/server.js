@@ -202,6 +202,13 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: isProduction ? 'Internal Server Error' : err.message });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running in ${isProduction ? 'production' : 'development'} mode on port ${PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`\n${'='.repeat(40)}`);
+  console.log(`NEURAL_OS_BACKEND_CORE_V1`);
+  console.log(`${'='.repeat(40)}`);
+  console.log(`STATUS: Operational`);
+  console.log(`MODE:   ${isProduction ? 'PRODUCTION' : 'DEVELOPMENT'}`);
+  console.log(`PORT:   ${PORT}`);
+  console.log(`ORIGIN: ${allowedOrigins.join(', ')}`);
+  console.log(`${'='.repeat(40)}\n`);
 });
