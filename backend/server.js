@@ -35,8 +35,9 @@ app.use('/api/contact', limiter);
 // CORS Configuration
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://neural-os-platform.vercel.app', // Example production URL
-  'https://viveksharma.dev' // Portfolio URL
+  'https://vivekcyr25.github.io',
+  'https://personal-website-vivek.vercel.app', // Predicted Vercel URL
+  'https://neural-os-platform.vercel.app'
 ];
 
 app.use(cors({
