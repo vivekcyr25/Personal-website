@@ -1,4 +1,6 @@
 import React, { useRef, Suspense, lazy, useState } from 'react';
+import profilePhoto from '../assets/profile-photo.png';
+
 import { useScroll, useTransform, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Activity, Shield, Cpu, Zap, Globe, ChevronDown, Terminal, Fingerprint, Database, Mail } from 'lucide-react';
@@ -104,7 +106,7 @@ const Home: React.FC = () => {
               {/* STABILIZED Profile Circle (Recovered & Dominant) */}
               <div className="profile-stable-container">
                 <div className="profile-circle-stable border-theme-primary shadow-[0_0_80px_rgba(var(--theme-primary-rgb),0.2)]">
-                  <img src="/profile-photo.png" alt="Vivek Sharma" className="w-full h-full object-cover scale-105" />
+                  <img src={profilePhoto} alt="Vivek Sharma" className="w-full h-full object-cover scale-105" />
                 </div>
               </div>
             </div>
@@ -200,7 +202,7 @@ const Home: React.FC = () => {
                   <div className="relative w-32 h-32">
                     <div className="absolute inset-0 bg-theme-primary/20 rounded-3xl blur-2xl animate-pulse" />
                     <div className="relative w-full h-full rounded-3xl bg-black border border-white/10 overflow-hidden">
-                      <img src="/profile-photo.png" alt="Vivek" className="w-full h-full object-cover opacity-80 contrast-[1.25] grayscale" />
+                      <img src={profilePhoto} alt="Vivek" className="w-full h-full object-cover opacity-80 contrast-[1.25] grayscale" />
                     </div>
                   </div>
                   <div className="space-y-2">
