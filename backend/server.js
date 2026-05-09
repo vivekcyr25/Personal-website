@@ -36,15 +36,23 @@ app.use('/api/contact', limiter);
 const allowedOrigins = [
   'http://localhost:5173',
   'https://vivekcyr25.github.io',
-  'https://personal-website-vivek.vercel.app', // Predicted Vercel URL
+  'https://personal-website-vivek.vercel.app',
   'https://neural-os-platform.vercel.app'
 ];
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin) || !isProduction) {
+    // Allow if no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    const isVercel = origin.endsWith('.vercel.app');
+    const isWhitelisted = allowedOrigins.includes(origin);
+    const isLocal = !isProduction && origin.includes('localhost');
+
+    if (isWhitelisted || isVercel || isLocal) {
       callback(null, true);
     } else {
+      console.warn(`[CORS_REJECTED]: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
