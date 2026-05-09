@@ -12,8 +12,11 @@ interface UseAIStreamOptions {
 export const useAIStream = () => {
   const [state, setState] = useState<StreamState>('IDLE');
   const abortControllerRef = useRef<AbortController | null>(null);
-  const API_URL = import.meta.env.VITE_API_URL || 
-                 (window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://personal-websiteneural-os-api.onrender.com');
+  const rawApiUrl = import.meta.env.VITE_API_URL;
+  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const API_URL = (!rawApiUrl || rawApiUrl.includes('localhost')) 
+    ? (isLocalhost ? 'http://localhost:5000' : 'https://personal-websiteneural-os-api.onrender.com')
+    : rawApiUrl;
 
   const stream = useCallback(async (message: string, context: any, options: UseAIStreamOptions = {}) => {
     if (abortControllerRef.current) {
