@@ -1,0 +1,35 @@
+@import "@syncfusion/ej2-base/styles/material-dark.css";
+@import "@syncfusion/ej2-react-grids/styles/material-dark.css";
+@import "@syncfusion/ej2-buttons/styles/material-dark.css";
+@import "@syncfusion/ej2-inputs/styles/material-dark.css";
+@import "@syncfusion/ej2-popups/styles/material-dark.css";
+@import "@syncfusion/ej2-navigations/styles/material-dark.css";
+
+/* Global Overrides for Cinematic UI */
+.e-grid {
+    border: none !important;
+    background: transparent !important;
+}
+
+.e-grid .e-headercell {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: rgba(0, 212, 255, 0.8) !important;
+    font-family: 'Space Mono', monospace !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+}
+
+.e-grid .e-row {
+    background-color: transparent !important;
+}
+
+.e-grid .e-rowcell {
+    color: rgba(255, 255, 255, 0.7) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    font-family: 'Chakra Petch', sans-serif !important;
+}
+
+.e-grid .e-gridheader {
+    border-bottom: none !important;
+}

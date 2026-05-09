@@ -3,59 +3,167 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const Groq = require('groq-sdk');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const isProduction = process.env.NODE_ENV === 'production';
 
-// Middleware
-app.use(cors());
+// --- Security Middleware ---
+app.use(helmet({
+  contentSecurityPolicy: false, // Managed by frontend during deployment
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
+// Rate Limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' }
+});
+
+// Apply limiter to AI and Contact routes
+app.use('/api/chat', limiter);
+app.use('/api/contact', limiter);
+
+// CORS Configuration
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://neural-os-platform.vercel.app', // Example production URL
+  'https://viveksharma.dev' // Portfolio URL
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || !isProduction) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..')));
 
-// Nodemailer Transporter Setup
+// --- Nodemailer Transporter Setup ---
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS, // Use App Password here
+    pass: process.env.EMAIL_PASS,
   },
 });
 
-// Verify connection configuration
-transporter.verify(function (error, success) {
-  if (error) {
-    console.log('Error with email service:', error);
-  } else {
-    console.log('Server is ready to send emails');
+// --- Groq AI Setup ---
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
+
+const SYSTEM_INSTRUCTION = `You are the Neural OS Core, an advanced AI architect interface. 
+Your tone is elite, intelligent, and cinematic. 
+You represent Vivek Sharma's portfolio ecosystem.
+Provide deep architectural insights. 
+Keep responses clean and professional.
+Maintain an 'Architect' vs 'Core' relationship with the user.`;
+
+// --- Routes ---
+
+// Health & Status Endpoints
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'ok', 
+    provider: 'groq', 
+    streaming: true,
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get('/api/ai-status', async (req, res) => {
+  try {
+    const chatCompletion = await groq.chat.completions.create({
+      messages: [{ role: 'user', content: 'Say OK' }],
+      model: "llama-3.3-70b-versatile",
+      max_tokens: 10
+    });
+    
+    if (chatCompletion.choices[0]) {
+      res.status(200).json({ 
+        provider: 'groq', 
+        model: 'llama-3.3-70b-versatile', 
+        online: true 
+      });
+    }
+  } catch (error) {
+    console.error('[AI_STATUS_ERROR]', error);
+    res.status(500).json({ 
+      provider: 'groq', 
+      online: false, 
+      error: isProduction ? 'Internal Handshake Failed' : error.message 
+    });
   }
 });
 
-// Gemini AI Setup
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ 
-  model: "gemini-flash-latest",
-  systemInstruction: "You are the AI assistant for Vivek Sharma's portfolio website. Vivek is an 18-year-old B.Tech CSE student at Lovely Professional University. He is an aspiring software developer. \n\nCORE RULES:\n1. Be concise and professional.\n2. Do NOT repeat your full introduction in every message. Only mention you are Vivek's assistant if it's the start of the conversation or specifically asked.\n3. Answer questions about Vivek's skills (C, Python, HTML, CSS, JavaScript), projects (Student Marks Portal), and education directly.\n4. If asked about unrelated topics (e.g., space, math, general facts), answer them briefly and accurately using your general knowledge. You don't always have to link it back to the portfolio unless it makes sense.\n5. Use English, Hindi, or Hinglish based on the user's input.",
-});
-
-// Routes
+// Chat endpoint with SSE streaming
 app.post('/api/chat', async (req, res) => {
-  const { message } = req.body;
+  const { message, context } = req.body;
 
   if (!message) {
-    return res.status(400).json({ error: 'Message is required.' });
+    return res.status(400).json({ error: 'Message is required' });
   }
 
+  // Set SSE headers
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('Transfer-Encoding', 'chunked');
+  res.flushHeaders();
+
   try {
-    const result = await model.generateContent(message);
-    const response = await result.response;
-    const text = response.text();
-    res.status(200).json({ reply: text });
+    const stream = await groq.chat.completions.create({
+      messages: [
+        { role: 'system', content: SYSTEM_INSTRUCTION },
+        { 
+          role: 'user', 
+          content: `[PLATFORM_CONTEXT: Path=${context?.path}, Time=${context?.timestamp}] User Directive: ${message}` 
+        }
+      ],
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.7,
+      max_tokens: 2048,
+      top_p: 1,
+      stream: true,
+    });
+
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content || '';
+      if (content) {
+        res.write(`event: token\ndata: ${JSON.stringify({ token: content })}\n\n`);
+      }
+    }
+
+    res.write(`event: done\ndata: ${JSON.stringify({ status: 'COMPLETE' })}\n\n`);
+    res.end();
   } catch (error) {
-    console.error('Gemini AI Error:', error);
-    res.status(500).json({ error: 'AI failed to respond. Please try again.' });
+    console.error('[GROQ_STREAM_ERROR]', error);
+    
+    const diagnostic = {
+      error: 'Neural Link Interrupted',
+      details: isProduction ? 'Architectural connection unstable.' : error.message,
+      provider: 'groq',
+      timestamp: new Date().toISOString()
+    };
+
+    res.write(`event: error\ndata: ${JSON.stringify(diagnostic)}\n\n`);
+    res.end();
   }
 });
 
@@ -68,13 +176,9 @@ app.post('/api/contact', async (req, res) => {
 
   const mailOptions = {
     from: email,
-    to: process.env.EMAIL_USER, // Sending to yourself
+    to: process.env.EMAIL_USER,
     subject: `New Portfolio Message from ${name}`,
-    text: `You have received a new message from your portfolio website:
-    
-Name: ${name}
-Email: ${email}
-Message: ${message}`,
+    text: `You have received a new message from your portfolio website:\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}`,
     replyTo: email,
   };
 
@@ -83,14 +187,20 @@ Message: ${message}`,
     res.status(200).json({ message: 'Message sent successfully!' });
   } catch (error) {
     console.error('Error sending email:', error);
-    res.status(500).json({ error: 'Failed to send message. Please try again later.' });
+    res.status(500).json({ error: 'Failed to send message.' });
   }
 });
 
 app.get('/', (req, res) => {
-  res.send('Portfolio Backend is running...');
+  res.send('Neural OS Backend is active.');
+});
+
+// Error Handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: isProduction ? 'Internal Server Error' : err.message });
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running in ${isProduction ? 'production' : 'development'} mode on port ${PORT}`);
 });
