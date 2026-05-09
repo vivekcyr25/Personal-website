@@ -328,7 +328,7 @@ const Home: React.FC = () => {
                   <i className="fas fa-envelope text-2xl"></i>
                 </a>
                 <a 
-                  href="https://personal-website-liart-seven-25.vercel.app/" 
+                  href="https://vivekcyr25.github.io/space-portfolio/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-white/20 hover:text-theme-primary transition-all duration-300 hover:-translate-y-1 hover:scale-110"
