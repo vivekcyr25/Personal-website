@@ -305,10 +305,36 @@ const Home: React.FC = () => {
             <div className="flex flex-col items-center gap-12">
               {/* Social Matrix */}
               <div className="flex justify-center gap-10">
-                <a href="#" className="text-white/20 hover:text-theme-primary transition-all duration-300 hover:-translate-y-1 hover:scale-110"><i className="fab fa-github text-2xl"></i></a>
-                <a href="#" className="text-white/20 hover:text-theme-primary transition-all duration-300 hover:-translate-y-1 hover:scale-110"><i className="fab fa-linkedin-in text-2xl"></i></a>
-                <a href="#" className="text-white/20 hover:text-theme-primary transition-all duration-300 hover:-translate-y-1 hover:scale-110"><i className="fas fa-envelope text-2xl"></i></a>
-                <a href="#" className="text-white/20 hover:text-theme-primary transition-all duration-300 hover:-translate-y-1 hover:scale-110"><i className="fas fa-globe text-2xl"></i></a>
+                <a 
+                  href="https://github.com/vivekcyr25" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-white/20 hover:text-theme-primary transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                >
+                  <i className="fab fa-github text-2xl"></i>
+                </a>
+                <a 
+                  href="https://www.linkedin.com/in/vivek-sharma-2bba8b398/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-white/20 hover:text-theme-primary transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                >
+                  <i className="fab fa-linkedin-in text-2xl"></i>
+                </a>
+                <a 
+                  href="mailto:viveklpu008@gmail.com" 
+                  className="text-white/20 hover:text-theme-primary transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                >
+                  <i className="fas fa-envelope text-2xl"></i>
+                </a>
+                <a 
+                  href="https://personal-website-liart-seven-25.vercel.app/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-white/20 hover:text-theme-primary transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                >
+                  <i className="fas fa-globe text-2xl"></i>
+                </a>
               </div>
 
               {/* Governance System Label (Subtle detail for beauty) */}
