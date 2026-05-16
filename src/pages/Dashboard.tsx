@@ -21,9 +21,25 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-theme-bg text-theme-text font-chakra flex overflow-hidden relative">
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        {/* Grid Pattern */}
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
+          backgroundSize: '40px 40px'
+        }} />
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px)',
+          backgroundSize: '10px 10px'
+        }} />
+        
+        {/* Moving Blobs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-theme-primary/5 rounded-full filter blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-theme-secondary/5 rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
       {/* Sidebar */}
-      <aside className="w-64 border-r border-theme-border bg-theme-bg/40 backdrop-blur-2xl flex flex-col z-20">
-        <div className="p-8 border-b border-theme-border">
+      <aside className="w-56 border-r border-theme-border bg-theme-bg/40 backdrop-blur-2xl flex flex-col z-20">
+        <div className="p-4 border-b border-theme-border">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-theme-primary rounded flex items-center justify-center font-orbitron font-black text-theme-bg shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.3)]">
               VS
@@ -35,7 +51,7 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <nav className="flex-1 p-6 space-y-2">
+        <nav className="flex-1 p-4 space-y-1">
           {[
             { icon: LayoutDashboard, label: 'Workspace', path: 'workspace' },
             { icon: Grid, label: 'Portfolios', path: 'portfolios' },
@@ -47,10 +63,10 @@ const Dashboard: React.FC = () => {
               key={item.label}
               to={item.path}
               className={({ isActive }) => `
-                w-full flex items-center gap-4 px-4 py-3 rounded-lg transition-all group
+                w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all group border border-transparent
                 ${isActive 
-                   ? 'bg-theme-primary/10 text-theme-primary border border-theme-primary/20 shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.1)]' 
-                   : 'text-white/40 hover:text-white hover:bg-white/5'}
+                   ? 'nav-item active' 
+                   : 'text-white/40 hover:text-white hover:bg-gradient-to-r hover:from-theme-primary/25 hover:to-transparent hover:border-theme-primary/40'}
               `}
             >
               <item.icon size={18} className="transition-transform group-hover:scale-110" />
@@ -59,7 +75,15 @@ const Dashboard: React.FC = () => {
           ))}
         </nav>
 
-        <div className="p-6 border-t border-white/10 space-y-6">
+        <div className="p-4 border-t border-white/10 space-y-4">
+          <div className="flex justify-around border-b border-white/5 pb-4">
+            <a href="https://github.com/vivekcyr25" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors">
+              <i className="fab fa-github text-lg"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/vivek-sharma-2bba8b398/" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors">
+              <i className="fab fa-linkedin text-lg"></i>
+            </a>
+          </div>
           <div className="space-y-3">
             <SecurityBadge type="FIREBASE" status="ACTIVE" />
             <SecurityBadge type="GEMINI" status="CONNECTED" />
@@ -77,17 +101,12 @@ const Dashboard: React.FC = () => {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 max-w-screen-2xl mx-auto w-full relative">
+      <div className="flex-1 flex flex-col min-w-0 w-full relative">
         {/* Top Header */}
-        <header className="h-20 border-b border-white/10 bg-theme-bg/60 backdrop-blur-md px-4 md:px-10 flex items-center justify-between sticky top-0 z-30">
-          <div className="flex items-center gap-4 md:gap-10">
-            <div className="flex flex-col">
-              <h2 className="font-orbitron text-sm font-black tracking-[0.3em] uppercase neural-glow">COMMAND_CENTER</h2>
-              <span className="text-[8px] font-space-mono text-white/30 uppercase tracking-[0.2em] hidden sm:block">Cluster: {hasIdentity ? 'Authorized_Node' : 'Restricted_Access'}</span>
-            </div>
-            
+        <header className="h-14 border-b border-white/10 bg-theme-bg/60 backdrop-blur-md px-4 md:px-6 flex items-center justify-between sticky top-0 z-30">
+          <div className="flex items-center">
             {/* Global OS Navigation */}
-            <nav className="hidden md:flex items-center gap-2 bg-black/40 p-1 rounded-full border border-white/5">
+            <nav className="hidden md:flex items-center gap-2 bg-black/40 p-1 rounded-full border border-white/5 absolute left-1/2 transform -translate-x-1/2">
               {[
                 { icon: HomeIcon, label: 'Home', path: '/' },
                 { icon: Zap, label: 'Systems', path: '/#systems' },
@@ -96,7 +115,7 @@ const Dashboard: React.FC = () => {
                 <Link
                   key={link.label}
                   to={link.path}
-                  className="flex items-center gap-2 px-4 py-1.5 rounded-full text-[9px] font-space-mono uppercase tracking-widest text-white/40 hover:text-white hover:bg-white/5 transition-all"
+                  className="flex items-center gap-2 px-4 py-1.5 rounded-full text-[9px] font-space-mono uppercase tracking-[0.2em] text-white/70 hover:text-white border border-transparent hover:bg-gradient-to-r hover:from-theme-primary/25 hover:to-transparent hover:border-theme-primary/40 transition-all"
                 >
                   <link.icon size={12} />
                   {link.label}
@@ -106,23 +125,14 @@ const Dashboard: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-4 md:gap-6">
-            <div className="hidden xl:block relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
-              <input 
-                type="text" 
-                placeholder="SEARCH_NEURAL_CLUSTER..." 
-                className="bg-white/5 border border-white/10 rounded-full py-2 px-10 text-[9px] font-space-mono focus:outline-none focus:border-theme-primary w-64 transition-all"
-              />
-            </div>
-
-            <div className="flex items-center gap-4 border-l border-white/10 pl-4 md:pl-6">
+            <div className="flex items-center gap-4">
               <div className="text-right hidden sm:block">
-                <p className="text-[10px] font-orbitron text-white leading-none mb-1">{user?.displayName?.toUpperCase() || 'ANONYMOUS'}</p>
+                <p className="text-[10px] font-orbitron text-white leading-none mb-1 whitespace-nowrap">{user?.displayName?.toUpperCase() || 'ANONYMOUS'}</p>
                 <p className={`text-[8px] font-space-mono leading-none tracking-widest ${hasIdentity ? 'text-theme-secondary' : 'text-theme-primary'}`}>
                   {hasIdentity ? 'ARCHITECT_V4' : 'GUEST_ARCHITECT'}
                 </p>
               </div>
-              <div className="w-10 h-10 rounded-lg bg-theme-primary/10 border border-theme-primary/20 flex items-center justify-center overflow-hidden shrink-0">
+              <div className="w-10 h-10 rounded-full bg-theme-primary/10 border-2 border-theme-primary/40 flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_10px_rgba(125,211,252,0.3)]">
                 {user?.photoURL ? (
                   <img src={user.photoURL} alt="User" className="w-full h-full object-cover" />
                 ) : (

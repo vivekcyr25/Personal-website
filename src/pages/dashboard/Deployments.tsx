@@ -16,15 +16,15 @@ const Deployments: React.FC = () => {
 
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
-       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+       <header className="flex flex-col items-center justify-center text-center gap-4">
         <div>
-          <h2 className="font-orbitron text-2xl font-black tracking-widest text-white neon-text-glow">DEPLOYMENT_LOGISTICS</h2>
+          <h2 className="font-orbitron text-xl font-black tracking-wider text-white neon-text-glow">DEPLOYMENT_LOGISTICS</h2>
           <p className="text-[10px] font-space-mono text-white/40 uppercase tracking-widest mt-1">Real-time status of active neural clusters</p>
         </div>
         <button 
           onClick={runDeployment}
           disabled={isRunning}
-          className={`flex items-center justify-center gap-3 border px-6 py-3 rounded-xl font-space-mono text-xs tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(var(--theme-primary-rgb),0.1)] ${isRunning ? 'bg-theme-primary/10 border-theme-primary/30 text-theme-primary cursor-not-allowed' : 'bg-theme-secondary/10 border-theme-secondary/30 text-theme-secondary hover:bg-theme-secondary/20'}`}
+          className={`flex items-center justify-center gap-3 border px-6 py-3 rounded-xl font-space-mono text-xs tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(var(--theme-primary-rgb),0.1)] ${isRunning ? 'bg-theme-primary/10 border-theme-primary/30 text-theme-primary cursor-not-allowed' : 'text-theme-secondary border-theme-secondary/30 hover:bg-gradient-to-r hover:from-theme-secondary/25 hover:to-transparent hover:border-theme-secondary/40'}`}
         >
           <RefreshCw size={18} className={isRunning ? 'animate-spin' : ''} />
           {isRunning ? 'SYNCHRONIZING...' : 'Sync All Nodes'}
@@ -53,8 +53,8 @@ const Deployments: React.FC = () => {
         </motion.div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-8 space-y-6">
+      <div className="max-w-3xl mx-auto space-y-8 w-full">
+        <div className="space-y-6">
           {deployments.map((d, i) => (
             <HologramPanel key={i} title={d.name}>
               <div className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -75,7 +75,7 @@ const Deployments: React.FC = () => {
                 <div className="flex gap-4">
                   <button 
                     onClick={() => setShowLogsModal(true)}
-                    className="px-6 py-2 glass-button text-white/70 hover:text-white"
+                    className="px-6 py-2 border border-transparent rounded-lg text-white/70 hover:text-white hover:bg-gradient-to-r hover:from-white/5 hover:to-transparent hover:border-white/10 transition-all"
                   >
                     Logs
                   </button>
@@ -87,7 +87,7 @@ const Deployments: React.FC = () => {
                         alert(`Deployment ${d.name} is currently ${d.status}. Endpoint not active.`);
                       }
                     }}
-                    className="px-6 py-2 glass-button text-theme-primary border-theme-primary/30 hover:bg-theme-primary/20"
+                    className="px-6 py-2 border border-transparent rounded-lg text-theme-primary hover:text-white hover:bg-gradient-to-r hover:from-theme-primary/25 hover:to-transparent hover:border-theme-primary/40 transition-all"
                   >
                     Visit
                   </button>
@@ -97,41 +97,39 @@ const Deployments: React.FC = () => {
           ))}
         </div>
 
-        <div className="lg:col-span-4 space-y-8">
-          <HologramPanel title="INTEGRATION_SYNC">
-            <div className="space-y-4">
-                {['GitHub', 'Vercel', 'Netlify', 'Cloudflare'].map(p => (
-                  <div key={p} className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-lg group hover:border-theme-primary/30 transition-all">
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-theme-secondary group-hover:scale-150 transition-transform" />
-                      <span className="text-[10px] font-space-mono text-white/80 uppercase">{p}</span>
-                    </div>
-                    <span className="text-[8px] font-space-mono text-theme-secondary uppercase font-bold tracking-widest">Authorized</span>
+        <HologramPanel title="INTEGRATION_SYNC">
+          <div className="space-y-4">
+              {['GitHub', 'Vercel', 'Netlify', 'Cloudflare'].map(p => (
+                <div key={p} className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-lg group hover:bg-gradient-to-r hover:from-theme-secondary/25 hover:to-transparent hover:border-theme-secondary/40 transition-all">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-theme-secondary group-hover:scale-150 transition-transform" />
+                    <span className="text-[10px] font-space-mono text-white/80 uppercase">{p}</span>
                   </div>
-                ))}
-            </div>
-          </HologramPanel>
+                  <span className="text-[8px] font-space-mono text-theme-secondary uppercase font-bold tracking-widest">Authorized</span>
+                </div>
+              ))}
+          </div>
+        </HologramPanel>
 
-          <HologramPanel title="REALTIME_LOGS">
-            <div className="h-[240px] overflow-y-auto space-y-4 font-space-mono text-[8px] uppercase leading-loose scrollbar-thin scrollbar-thumb-white/5">
-               {logs.length === 0 ? (
-                 <div className="text-white/20 italic">Awaiting telemetry...</div>
-               ) : (
-                 logs.map((log, i) => (
-                    <motion.div 
-                     key={i} 
-                     initial={{ opacity: 0, x: -10 }}
-                     animate={{ opacity: 1, x: 0 }}
-                     className={`flex gap-3 ${log.type === 'success' ? 'text-theme-secondary' : log.type === 'error' ? 'text-theme-accent' : 'text-white/40'}`}
-                    >
-                      <span className="text-theme-primary">[{log.timestamp}]</span>
-                      <span>{log.message}</span>
-                    </motion.div>
-                 ))
-               )}
-            </div>
-          </HologramPanel>
-        </div>
+        <HologramPanel title="REALTIME_LOGS">
+          <div className="h-[240px] overflow-y-auto space-y-4 font-space-mono text-[8px] uppercase leading-loose scrollbar-thin scrollbar-thumb-white/5">
+             {logs.length === 0 ? (
+               <div className="text-white/20 italic">Awaiting telemetry...</div>
+             ) : (
+               logs.map((log, i) => (
+                  <motion.div 
+                   key={i} 
+                   initial={{ opacity: 0, x: -10 }}
+                   animate={{ opacity: 1, x: 0 }}
+                   className={`flex gap-3 ${log.type === 'success' ? 'text-theme-secondary' : log.type === 'error' ? 'text-theme-accent' : 'text-white/40'}`}
+                  >
+                    <span className="text-theme-primary">[{log.timestamp}]</span>
+                    <span>{log.message}</span>
+                  </motion.div>
+               ))
+             )}
+          </div>
+        </HologramPanel>
       </div>
 
       {/* Logs Modal Overlay */}

@@ -10,13 +10,14 @@ import { useTelemetry } from '../../hooks/useTelemetry';
 import { useAIStream } from '../../hooks/useAIStream';
 import { aiMonitor } from '../../services/ai/AIConnectionMonitor';
 import { useAuth } from '../../context/AuthContext';
+import { portfolioKnowledge } from '../../config/portfolioKnowledge';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
 }
 
-const NeuralConsole: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+const NeuralConsole: React.FC<{ onClose: () => void; portfolioState?: string; portfolioData?: any }> = ({ onClose, portfolioState, portfolioData }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isThinking, setIsThinking] = useState(false);
@@ -53,11 +54,20 @@ const NeuralConsole: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     try {
       let currentAssistantMessage = "";
       
+      const words = userMessage.trim().split(/\s+/);
+      const knownKeywords = ['project', 'about', 'skills', 'contact', 'architecture', 'apis', 'portfolio', 'github', 'linkedin', 'open view', 'customize', 'theme'];
+      const isVague = words.length < 3 && !knownKeywords.some(kw => userMessage.toLowerCase().includes(kw));
+      const intentHint = isVague ? "VAGUE_QUERY" : undefined;
+
       await stream(userMessage, {
         path: location.pathname,
         timestamp: new Date().toISOString(),
         userId: user.uid,
-        platform: 'NEURAL_OS_V4'
+        platform: 'NEURAL_OS_V4',
+        knowledge: portfolioKnowledge,
+        portfolioState: portfolioState,
+        portfolioData: portfolioData,
+        intentHint: intentHint
       }, {
         onToken: (token) => {
           setIsThinking(false);
@@ -100,7 +110,7 @@ const NeuralConsole: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-theme-bg/40 backdrop-blur-3xl relative overflow-hidden border border-theme-primary/20">
+    <div className="flex flex-col h-full liquid-glass-readable relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-theme-primary/50 to-transparent" />
@@ -114,10 +124,10 @@ const NeuralConsole: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             <Cpu size={18} className="text-theme-primary" />
           </div>
           <div>
-            <h3 className="font-orbitron text-xs font-bold tracking-widest text-white">NEURAL_CONSOLE_L3</h3>
+            <h3 className="font-mono text-xs font-medium tracking-[0.02em] text-white">Portfolio Assistant</h3>
             <div className="flex items-center gap-2">
               <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${metrics.latency < 100 ? 'bg-theme-secondary' : 'bg-theme-accent'}`} />
-              <span className="text-[8px] font-space-mono text-white/60 uppercase tracking-tighter">
+              <span className="text-[8px] font-mono text-white/60 uppercase tracking-tighter">
                 Link: {streamState === 'IDLE' ? 'READY' : streamState} // Latency: {metrics.latency}ms
               </span>
             </div>
@@ -189,16 +199,16 @@ const NeuralConsole: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   <div className={`max-w-[85%] rounded-xl relative overflow-hidden ${
                     msg.role === 'user' 
                       ? 'bg-theme-primary/10 border border-theme-primary/20 text-white p-4' 
-                      : 'bg-white/5 border border-white/10 text-white/80 p-5'
+                      : 'bg-white/5 border border-white/10 text-white/80 p-5 ai-response-rail'
                   }`}>
                     <div className="flex items-center gap-2 mb-3">
                       <div className={`w-1.5 h-1.5 rounded-full ${msg.role === 'user' ? 'bg-theme-primary shadow-[0_0_8px_rgba(var(--theme-primary-rgb),0.5)]' : 'bg-theme-secondary shadow-[0_0_8px_rgba(var(--theme-secondary-rgb),0.5)]'}`} />
-                      <span className="text-[9px] font-space-mono uppercase tracking-[0.3em] opacity-50 font-bold">
-                        {msg.role === 'user' ? 'Architect_Identity' : 'Cognition_Engine_L3'}
+                      <span className="text-[9px] font-mono uppercase tracking-[0.3em] opacity-50 font-bold">
+                        {msg.role === 'user' ? 'You' : 'Portfolio Assistant'}
                       </span>
                     </div>
                     
-                    <div className="font-chakra text-[13px] md:text-sm leading-relaxed">
+                    <div className="text-[13px] md:text-sm leading-relaxed">
                       {msg.role === 'assistant' && i === messages.length - 1 && streamState === 'STREAMING' ? (
                         <div className="flex flex-col gap-2">
                            {msg.content}
@@ -217,8 +227,8 @@ const NeuralConsole: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                       <div className="flex gap-1">
                         {[1, 2, 3].map(dot => <div key={dot} className="w-1 h-1 bg-white rounded-full" />)}
                       </div>
-                      <span className="text-[7px] font-space-mono uppercase tracking-widest">
-                        {msg.role === 'user' ? 'Direct_Uplink' : 'Neural_Processed'}
+                      <span className="text-[7px] font-mono uppercase tracking-widest">
+                        {msg.role === 'user' ? 'Direct_Uplink' : 'RESPONSE_READY'}
                       </span>
                     </div>
                   </div>
@@ -245,8 +255,8 @@ const NeuralConsole: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="ACCESS_DISTRIBUTED_COGNITION_LAYER..."
-                className="w-full bg-black/40 border border-theme-primary/30 rounded-lg py-3 px-4 pr-12 text-sm font-space-mono text-white placeholder:text-white/20 focus:outline-none focus:border-theme-primary transition-all group-hover:border-theme-primary/50"
+                placeholder="Ask me anything about Vivek's work..."
+                className="w-full bg-black/40 border border-theme-primary/30 rounded-lg py-3 px-4 pr-12 text-sm font-space-mono text-white placeholder:text-white/20 focus:outline-none focus:border-theme-primary transition-all group-hover:border-theme-primary/50 focus:ai-input-orbit"
               />
               <button 
                 onClick={handleSend}

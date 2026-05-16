@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle, ChevronRight, ChevronLeft, Zap, Loader2, Globe, Cpu, Layout } from 'lucide-react';
+import { X, CheckCircle, ChevronRight, ChevronLeft, Zap, Loader2, Globe, Cpu, Layout, Info } from 'lucide-react';
 import HologramPanel from '../HologramPanel';
 import { useAudio } from '../../hooks/useAudio';
+import { PortfolioState } from './PortfolioOSState';
+import { GeneratedPortfolioPanel } from './GeneratedPortfolioPanel';
 
 interface PortfolioWizardProps {
   isOpen: boolean;
   onClose: () => void;
   onDeploy: (data: any) => void;
+  onOpenView: () => void;
+  onModuleClick: (module: string) => void;
 }
 
-export const PortfolioWizard: React.FC<PortfolioWizardProps> = ({ isOpen, onClose, onDeploy }) => {
+export const PortfolioWizard: React.FC<PortfolioWizardProps> = ({ isOpen, onClose, onDeploy, onOpenView, onModuleClick }) => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '', codename: '', role: '', bio: '', skills: '', github: '', linkedin: '', aiStyle: 'MINIMAL', theme: 'CYAN_CORE'
   });
+  const [currentState, setCurrentState] = useState<PortfolioState>(PortfolioState.IDLE);
   const [isSimulating, setIsSimulating] = useState(false);
   const [simulationStep, setSimulationStep] = useState('');
   const { playHover, playClick } = useAudio();
@@ -30,6 +35,7 @@ export const PortfolioWizard: React.FC<PortfolioWizardProps> = ({ isOpen, onClos
 
   const simulateDeployment = () => {
     setIsSimulating(true);
+    setCurrentState(PortfolioState.INITIALIZING);
     const stages = ['VALIDATING_NEURAL_WEIGHTS', 'COMPILING_ASSETS', 'OPTIMIZING_GLASS_SHADERS', 'SYNCHRONIZING_WITH_EDGE', 'DEPLOYMENT_READY'];
     
     stages.forEach((stage, index) => {
@@ -39,7 +45,7 @@ export const PortfolioWizard: React.FC<PortfolioWizardProps> = ({ isOpen, onClos
           setTimeout(() => {
             setIsSimulating(false);
             onDeploy(formData);
-            onClose();
+            setCurrentState(PortfolioState.GENERATED_SUMMARY);
           }, 1500);
         }
       }, index * 1200);
@@ -96,7 +102,14 @@ export const PortfolioWizard: React.FC<PortfolioWizardProps> = ({ isOpen, onClos
 
             <div className="flex-1">
               <AnimatePresence mode="wait">
-                {isSimulating ? (
+                {currentState === PortfolioState.GENERATED_SUMMARY ? (
+                  <GeneratedPortfolioPanel 
+                    data={formData} 
+                    onCustomizeAgain={() => setCurrentState(PortfolioState.IDLE)} 
+                    onOpenView={onOpenView}
+                    onModuleClick={onModuleClick}
+                  />
+                ) : isSimulating ? (
                   <motion.div key="sim" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-full flex flex-col items-center justify-center gap-6">
                     <Loader2 size={48} className="text-neon-blue animate-spin" />
                     <h3 className="font-orbitron text-lg text-white tracking-widest">{simulationStep}</h3>
@@ -121,6 +134,10 @@ export const PortfolioWizard: React.FC<PortfolioWizardProps> = ({ isOpen, onClos
                       <label className="font-space-mono text-[9px] text-white/50 uppercase tracking-widest">Primary Designation (Role)</label>
                       <input type="text" value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})} className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-sm font-space-mono text-white focus:border-neon-blue outline-none transition-all" placeholder="e.g. AI Systems Architect" />
                     </div>
+                    
+                    <div className="p-4 border border-white/10 bg-white/5 rounded-xl flex items-center justify-center h-24 relative overflow-hidden group">
+                       <span className="font-space-mono text-xs text-white/40 uppercase tracking-widest flex items-center gap-2"><Info size={14}/> Setup Guidance: Define your identity and primary role.</span>
+                    </div>
                   </motion.div>
                 ) : step === 2 ? (
                   <motion.div key="s2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
@@ -132,6 +149,10 @@ export const PortfolioWizard: React.FC<PortfolioWizardProps> = ({ isOpen, onClos
                     <div className="space-y-2">
                       <label className="font-space-mono text-[9px] text-white/50 uppercase tracking-widest">Skill Matrix (Comma separated)</label>
                       <input type="text" value={formData.skills} onChange={e => setFormData({...formData, skills: e.target.value})} className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-sm font-space-mono text-white focus:border-neon-blue outline-none transition-all" />
+                    </div>
+                    
+                    <div className="p-4 border border-white/10 bg-white/5 rounded-xl flex items-center justify-center h-24 relative overflow-hidden group">
+                       <span className="font-space-mono text-xs text-white/40 uppercase tracking-widest flex items-center gap-2"><Info size={14}/> Setup Guidance: Provide a bio and list your core skills.</span>
                     </div>
                   </motion.div>
                 ) : (
@@ -168,17 +189,17 @@ export const PortfolioWizard: React.FC<PortfolioWizardProps> = ({ isOpen, onClos
             <div className="mt-8 flex justify-between border-t border-white/5 pt-6">
               <button 
                 onClick={() => { playClick(); setStep(s => Math.max(1, s - 1)); }} 
-                className={`flex items-center gap-2 font-space-mono text-[10px] tracking-widest uppercase transition-colors ${step === 1 || isSimulating ? 'opacity-0 pointer-events-none' : 'text-white/50 hover:text-white'}`}
+                className={`flex items-center gap-2 font-space-mono text-[10px] tracking-widest uppercase transition-colors ${(step === 1 || isSimulating || currentState === PortfolioState.GENERATED_SUMMARY) ? 'opacity-0 pointer-events-none' : 'text-white/50 hover:text-white'}`}
                 onMouseEnter={playHover}
               >
                 <ChevronLeft size={14} /> Back
               </button>
               
-              {!isSimulating && (
+              {!isSimulating && currentState !== PortfolioState.GENERATED_SUMMARY && (
                 <button 
                   onClick={handleNext}
                   onMouseEnter={playHover}
-                  className="flex items-center gap-2 bg-neon-blue/10 border border-neon-blue/40 px-6 py-2 rounded-xl font-orbitron text-[10px] font-bold tracking-widest text-neon-blue uppercase hover:bg-neon-blue hover:text-dark-bg transition-all shadow-[0_0_15px_rgba(0,212,255,0.2)] active:scale-95"
+                  className="flex items-center gap-2 liquid-button px-6 py-2 rounded-xl font-orbitron text-[10px] font-bold tracking-widest text-white uppercase active:scale-95"
                 >
                   {step === 3 ? 'INITIATE_DEPLOYMENT' : 'NEXT_SEQUENCE'} <ChevronRight size={14} />
                 </button>

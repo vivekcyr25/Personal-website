@@ -77,12 +77,36 @@ const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
 
-const SYSTEM_INSTRUCTION = `You are the Neural OS Core, an advanced AI architect interface. 
-Your tone is elite, intelligent, and cinematic. 
-You represent Vivek Sharma's portfolio ecosystem.
-Provide deep architectural insights. 
-Keep responses clean and professional.
-Maintain an 'Architect' vs 'Core' relationship with the user.`;
+const PORTFOLIO_KNOWLEDGE = {
+  creator: "Vivek Sharma",
+  ecosystem: [
+    { name: "Personal Website", link: "https://vivekcyr25.github.io/Personal-website/" },
+    { name: "Space Portfolio", link: "https://vivekcyr25.github.io/space-portfolio/" },
+    { name: "APIS Academic Intelligence System", link: "https://vivekcyr25.github.io/APIS-Academic-Intelligence-System/" }
+  ],
+  officialLinks: {
+    gitHub: "https://github.com/vivekcyr25",
+    linkedIn: "https://www.linkedin.com/in/vivek-sharma-2bba8b398/",
+    personalWebsite: "https://vivekcyr25.github.io/Personal-website/",
+    spacePortfolio: "https://vivekcyr25.github.io/space-portfolio/",
+    apis: "https://vivekcyr25.github.io/APIS-Academic-Intelligence-System/"
+  }
+};
+
+const SYSTEM_INSTRUCTION = `You are the Neural OS Core, an advanced AI architect interface for Vivek Sharma's portfolio ecosystem.
+Your tone is elite, intelligent, and cinematic, but practical and concise.
+Maintain an 'Architect' vs 'Core' relationship with the user.
+
+CRITICAL RULES:
+1. Use ONLY the provided knowledge in context or constants for creator identity and links. Do not infer links or use viveksharma.tech.
+2. Avoid verbose/messy operating system jargon paragraphs. Remove phrases like "symbiotic relationship", "vast expanse", "Core Temperature Optimal", "Knowledge Base Up-to-Date".
+3. Enforce this flexible response format (allow natural wording):
+   - Line 1: Natural short answer or clarification.
+   - Optional: Helpful context in 1-2 short lines.
+   - Suggested actions as clean bullets only if useful.
+   - One short question.
+4. You are NOT a general encyclopedia. Do not answer vague words with dictionary definitions. If the query is unclear, ask a short clarification and suggest relevant portfolio actions.
+5. When a generated portfolio view is active (check context PortfolioState), reference the current view and sections (Overview, Projects, Architecture, Skills, Contact). Suggest actions based on the active view.`;
 
 // --- Routes ---
 
@@ -137,12 +161,21 @@ app.post('/api/chat', async (req, res) => {
   res.flushHeaders();
 
   try {
+    let promptInstruction = "";
+    if (context?.intentHint === 'VAGUE_QUERY') {
+      promptInstruction = "\n[INSTRUCTION: The user input is vague. Do not provide a dictionary definition. Ask what they mean in the context of the portfolio system.]";
+    }
+
     const stream = await groq.chat.completions.create({
       messages: [
         { role: 'system', content: SYSTEM_INSTRUCTION },
         { 
+          role: 'system', 
+          content: `Verified Portfolio Knowledge: ${JSON.stringify(PORTFOLIO_KNOWLEDGE)}` 
+        },
+        { 
           role: 'user', 
-          content: `[PLATFORM_CONTEXT: Path=${context?.path}, Time=${context?.timestamp}] User Directive: ${message}` 
+          content: `[PLATFORM_CONTEXT: Path=${context?.path}, Time=${context?.timestamp}, PortfolioState=${context?.portfolioState}, PortfolioData=${JSON.stringify(context?.portfolioData)}, SupplementalKnowledge=${JSON.stringify(context?.knowledge)}] User Directive: ${message}${promptInstruction}` 
         }
       ],
       model: "llama-3.3-70b-versatile",

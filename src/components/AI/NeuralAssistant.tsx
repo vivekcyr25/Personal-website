@@ -59,7 +59,7 @@ const NeuralAssistant: React.FC = () => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: [0, 1, 0], y: 0 }}
               transition={{ duration: 2, times: [0, 0.5, 1] }}
-              className="absolute top-12 left-1/2 -translate-x-1/2 font-orbitron text-xl md:text-3xl font-black text-theme-primary tracking-[0.5em] pointer-events-none z-10 text-center neural-glow"
+              className="absolute top-4 left-1/2 -translate-x-1/2 font-orbitron text-lg md:text-xl font-black text-theme-primary tracking-[0.5em] pointer-events-none z-10 text-center neural-glow"
             >
               NEURAL INTERFACE ACTIVATED
             </motion.div>

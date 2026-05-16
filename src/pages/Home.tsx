@@ -46,19 +46,38 @@ const Home: React.FC = () => {
       {/* Global Scanline Effect */}
       <div className="fixed inset-0 pointer-events-none z-[100] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.02),rgba(0,255,0,0.01),rgba(0,0,255,0.02))] bg-[length:100%_4px,4px_100%] opacity-20" />
 
+      {/* Dynamic Background Grid */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        {/* Grid Pattern */}
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
+          backgroundSize: '40px 40px'
+        }} />
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px)',
+          backgroundSize: '10px 10px'
+        }} />
+        
+        {/* Moving Blobs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-theme-primary/5 rounded-full filter blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-theme-secondary/5 rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
+
       {/* Navigation */}
       <motion.nav 
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="fixed top-6 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-1.5 px-6 py-2 bg-black/40 backdrop-blur-3xl border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+        className="fixed top-0 left-0 w-full z-[1000] flex items-center justify-between px-8 py-4 bg-gradient-to-r from-theme-primary/5 via-black/80 to-theme-primary/5 backdrop-blur-3xl border-b border-white/10 shadow-[0_4px_32px_rgba(0,0,0,0.3)]"
       >
-        <a href="#hero" className="font-orbitron font-black text-sm text-theme-secondary tracking-[3px] mr-4">VS</a>
+        <a href="#hero" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all group">
+          <span className="font-orbitron font-black text-sm text-theme-secondary tracking-[1px] ml-0.5 group-hover:scale-110 transition-transform">VS</span>
+        </a>
         <div className="flex gap-1">
           {['Home', 'About', 'Systems'].map((item) => (
             <a 
               key={item}
-              href={`#${item.toLowerCase()}`} 
-              className="text-white/60 font-space-mono text-[9px] tracking-[0.2em] uppercase px-4 py-1.5 rounded-full transition-all hover:text-white hover:bg-white/5"
+              href={item === 'Home' ? '#hero' : `#${item.toLowerCase()}`} 
+              className="text-white/70 font-space-mono text-[9px] tracking-[0.2em] uppercase px-4 py-1.5 rounded-full transition-all hover:text-white border border-transparent hover:bg-gradient-to-r hover:from-theme-primary/25 hover:to-transparent hover:border-theme-primary/40"
             >
               {item}
             </a>
@@ -66,14 +85,14 @@ const Home: React.FC = () => {
           {!user ? (
             <button 
               onClick={() => navigate('/login')}
-              className="ml-2 bg-theme-primary/10 border border-theme-primary/30 text-theme-primary font-space-mono text-[9px] tracking-[0.2em] uppercase px-6 py-1.5 rounded-full transition-all hover:bg-theme-primary hover:text-theme-bg hover:border-theme-primary shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.2)]"
+              className="ml-2 text-white/70 font-space-mono text-[9px] tracking-[0.2em] uppercase px-4 py-1.5 rounded-full transition-all hover:text-white border border-transparent hover:bg-gradient-to-r hover:from-theme-primary/25 hover:to-transparent hover:border-theme-primary/40"
             >
               Initialize_Link
             </button>
           ) : (
             <button 
               onClick={() => navigate('/dashboard')}
-              className="ml-2 bg-theme-secondary/10 border border-theme-secondary/30 text-theme-secondary font-space-mono text-[9px] tracking-[0.2em] uppercase px-6 py-1.5 rounded-full transition-all hover:bg-theme-secondary hover:text-theme-bg hover:border-theme-secondary shadow-[0_0_15px_rgba(var(--theme-secondary-rgb),0.2)]"
+              className="ml-2 text-white/70 font-space-mono text-[9px] tracking-[0.2em] uppercase px-4 py-1.5 rounded-full transition-all hover:text-white border border-transparent hover:bg-gradient-to-r hover:from-theme-primary/25 hover:to-transparent hover:border-theme-primary/40"
             >
               Dashboard
             </button>
@@ -296,9 +315,9 @@ const Home: React.FC = () => {
           {/* Refactored Enterprise Footer Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-24 items-start pb-20">
             {/* Left: Branding */}
-            <div className="text-center lg:text-left space-y-3 group">
-              <h3 className="font-orbitron text-2xl font-black tracking-[0.4em] text-white interactive-text cursor-default mb-0">VIVEK_SHARMA</h3>
-              <p className="text-white/30 text-[11px] font-space-mono uppercase tracking-[0.5em]">AI Systems Architect</p>
+            <div className="text-left space-y-1 group">
+              <h3 className="text-xl font-bold interactive-text cursor-default mb-0">Vivek Sharma</h3>
+              <p className="text-white/30 text-[11px] font-semibold uppercase tracking-[0.08em]">AI Systems Architect</p>
             </div>
 
             {/* Center: Social & Governance (Refined single-line layout) */}
@@ -309,38 +328,38 @@ const Home: React.FC = () => {
                   href="https://github.com/vivekcyr25" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-white/20 hover:text-theme-primary transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                  className="text-white/20 hover:text-white transition-all duration-300 inline-flex items-center justify-center p-3 rounded-full border border-transparent hover:bg-gradient-to-r hover:from-theme-primary/25 hover:to-transparent hover:border-theme-primary/40 group"
                 >
-                  <i className="fab fa-github text-2xl"></i>
+                  <i className="fab fa-github text-2xl group-hover:-translate-y-1 group-hover:scale-110 transition-all duration-300"></i>
                 </a>
                 <a 
                   href="https://www.linkedin.com/in/vivek-sharma-2bba8b398/" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-white/20 hover:text-theme-primary transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                  className="text-white/20 hover:text-white transition-all duration-300 inline-flex items-center justify-center p-3 rounded-full border border-transparent hover:bg-gradient-to-r hover:from-theme-primary/25 hover:to-transparent hover:border-theme-primary/40 group"
                 >
-                  <i className="fab fa-linkedin-in text-2xl"></i>
+                  <i className="fab fa-linkedin-in text-2xl group-hover:-translate-y-1 group-hover:scale-110 transition-all duration-300"></i>
                 </a>
                 <a 
                   href="mailto:viveklpu008@gmail.com" 
-                  className="text-white/20 hover:text-theme-primary transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                  className="text-white/20 hover:text-white transition-all duration-300 inline-flex items-center justify-center p-3 rounded-full border border-transparent hover:bg-gradient-to-r hover:from-theme-primary/25 hover:to-transparent hover:border-theme-primary/40 group"
                 >
-                  <i className="fas fa-envelope text-2xl"></i>
+                  <i className="fas fa-envelope text-2xl group-hover:-translate-y-1 group-hover:scale-110 transition-all duration-300"></i>
                 </a>
                 <a 
                   href="https://vivekcyr25.github.io/space-portfolio/" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-white/20 hover:text-theme-primary transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                  className="text-white/20 hover:text-white transition-all duration-300 inline-flex items-center justify-center p-3 rounded-full border border-transparent hover:bg-gradient-to-r hover:from-theme-primary/25 hover:to-transparent hover:border-theme-primary/40 group"
                 >
-                  <i className="fas fa-globe text-2xl"></i>
+                  <i className="fas fa-globe text-2xl group-hover:-translate-y-1 group-hover:scale-110 transition-all duration-300"></i>
                 </a>
               </div>
 
               {/* Governance System Label (Subtle detail for beauty) */}
               <div className="flex items-center gap-3 opacity-20">
                 <div className="h-[1px] w-8 bg-white/50" />
-                <span className="font-orbitron text-[7px] font-black tracking-[0.5em] uppercase">Enterprise_Compliance_Stack</span>
+                <span className="text-[7px] font-semibold tracking-[0.08em] uppercase">Enterprise Compliance Stack</span>
                 <div className="h-[1px] w-8 bg-white/50" />
               </div>
 
@@ -352,7 +371,7 @@ const Home: React.FC = () => {
                   <React.Fragment key={label}>
                     <button
                       onClick={() => setGovOpen(true)}
-                      className="font-space-mono text-[9px] uppercase tracking-[0.3em] text-white/20 hover:text-theme-primary transition-all duration-500 hover:tracking-[0.4em]"
+                      className="font-semibold text-[9px] uppercase tracking-[0.08em] text-white/20 hover:text-theme-primary transition-all duration-500"
                     >
                       {label}
                     </button>

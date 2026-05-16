@@ -1,0 +1,56 @@
+:root {
+  /* Base colors */
+  --bg-deep: #030712;
+  --bg-panel: rgba(8, 13, 28, 0.72);
+  --bg-panel-strong: rgba(10, 16, 34, 0.86);
+
+  /* Glass */
+  --glass-surface: rgba(255, 255, 255, 0.055);
+  --glass-surface-hover: rgba(255, 255, 255, 0.085);
+  --glass-surface-active: rgba(255, 255, 255, 0.105);
+
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-strong: rgba(255, 255, 255, 0.20);
+  --glass-highlight: rgba(255, 255, 255, 0.18);
+
+  /* Accent */
+  --accent-cyan: #7DD3FC;
+  --accent-violet: #A78BFA;
+  --accent-emerald: #6EE7B7;
+  --accent-pink: #F0ABFC;
+  --accent-amber: #FCD34D;
+
+  /* AI glow */
+  --glow-cyan-xs: 0 0 10px rgba(125, 211, 252, 0.10);
+  --glow-cyan-sm: 0 0 16px rgba(125, 211, 252, 0.14);
+  --glow-cyan-md: 0 0 24px rgba(125, 211, 252, 0.18);
+
+  /* Shadows */
+  --shadow-glass:
+    0 12px 40px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+
+  /* Text */
+  --text-primary: rgba(255, 255, 255, 0.94);
+  --text-secondary: rgba(255, 255, 255, 0.72);
+  --text-muted: rgba(255, 255, 255, 0.48);
+  --text-disabled: rgba(255, 255, 255, 0.32);
+
+  /* Radii */
+  --radius-glass-sm: 14px;
+  --radius-glass-md: 22px;
+  --radius-glass-lg: 32px;
+  --radius-pill: 999px;
+
+  /* Blur */
+  --blur-glass: 18px;
+  --blur-glass-strong: 28px;
+  --blur-bg-orb: 72px;
+
+  /* Motion */
+  --ease-liquid: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 140ms;
+  --duration-medium: 260ms;
+  --duration-slow: 520ms;
+}

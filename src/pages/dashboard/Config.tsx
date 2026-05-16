@@ -120,15 +120,11 @@ const Config: React.FC = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`
-                  flex items-center gap-3 px-4 py-2 md:px-6 md:py-3 rounded-xl font-orbitron text-[10px] font-bold tracking-widest uppercase transition-all
+                  flex items-center gap-3 px-4 py-2 md:px-6 md:py-3 rounded-xl font-orbitron text-[10px] font-bold tracking-widest uppercase transition-all border
                   ${activeTab === tab.id 
-                    ? 'text-dark-bg' 
-                    : 'text-white/40 hover:text-white hover:bg-white/5'}
+                    ? 'bg-theme-primary/20 border-theme-primary/30 text-white' 
+                    : 'border-transparent text-white/40 hover:text-white hover:bg-gradient-to-r hover:from-theme-primary/20 hover:to-transparent hover:border-theme-primary/30'}
                 `}
-                style={activeTab === tab.id ? {
-                  background: 'var(--theme-primary, #00d4ff)',
-                  boxShadow: '0 0 20px var(--theme-primary, rgba(0,212,255,0.3))',
-                } : {}}
               >
                 <tab.icon size={14} />
                 <span className="hidden sm:inline">{tab.label}</span>
@@ -233,7 +229,7 @@ const Config: React.FC = () => {
                         </button>
                       </div>
                       <div className="flex justify-end pt-4">
-                        <button className="glass-button text-theme-primary hover:text-white" onClick={() => handleProfileUpdate('codename', profile.codename)}>
+                        <button className="px-6 py-2 border border-transparent rounded-lg text-theme-primary hover:text-white hover:bg-gradient-to-r hover:from-theme-primary/25 hover:to-transparent hover:border-theme-primary/40 transition-all" onClick={() => handleProfileUpdate('codename', profile.codename)}>
                           Force Save Settings
                         </button>
                       </div>
@@ -501,12 +497,12 @@ const Config: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-8 border-t border-white/5">
-                       <button className="flex items-center justify-center gap-3 bg-white/5 border border-white/10 p-4 rounded-xl font-orbitron text-[10px] font-bold tracking-widest uppercase hover:bg-white/10 hover:border-white/30 transition-all active:scale-95">
+                       <button className="flex items-center justify-center gap-3 bg-white/5 border border-transparent p-4 rounded-xl font-orbitron text-[10px] font-bold tracking-widest uppercase hover:bg-gradient-to-r hover:from-theme-primary/25 hover:to-transparent hover:border-theme-primary/40 transition-all active:scale-95">
                          Update Profile Identity
                        </button>
                          <button 
                            onClick={handleLogout}
-                           className="flex items-center justify-center gap-3 bg-theme-accent/10 border border-theme-accent/30 text-theme-accent p-4 rounded-xl font-orbitron text-[10px] font-bold tracking-widest uppercase hover:bg-theme-accent hover:text-white transition-all shadow-[0_0_15px_rgba(var(--theme-accent-rgb),0.2)] active:scale-95"
+                           className="flex items-center justify-center gap-3 bg-theme-accent/10 border border-transparent text-theme-accent p-4 rounded-xl font-orbitron text-[10px] font-bold tracking-widest uppercase hover:bg-gradient-to-r hover:from-theme-accent/25 hover:to-transparent hover:border-theme-accent/40 hover:text-white transition-all shadow-[0_0_15px_rgba(var(--theme-accent-rgb),0.2)] active:scale-95"
                          >
                          Secure Terminate Session
                        </button>
@@ -539,20 +535,15 @@ const Config: React.FC = () => {
             </div>
           </HologramPanel>
 
-          <div className="liquid-glass p-6 flex flex-col items-center text-center gap-4 group cursor-crosshair">
-            <Zap className="animate-pulse group-hover:scale-110 transition-transform" style={{ color: 'var(--theme-primary, #00d4ff)' }} size={32} />
+          <div className="bg-black/40 border border-white/10 rounded-2xl p-6 flex flex-col items-center text-center gap-4 group cursor-crosshair">
+            <Zap className="group-hover:scale-110 transition-transform text-theme-primary" size={32} />
             <h4 className="font-orbitron text-[10px] font-bold text-white tracking-widest uppercase">System_Optimization</h4>
             <p className="font-space-mono text-[8px] text-white/40 uppercase leading-relaxed">
               Neural weights require recalibration for optimal performance.
             </p>
             <button
               onClick={() => setRecalibrateOpen(true)}
-              className="w-full py-3 rounded-xl font-orbitron text-[10px] font-bold tracking-widest uppercase transition-all active:scale-95 mt-2"
-              style={{
-                background: 'var(--theme-primary, #00d4ff)',
-                color: '#020b24',
-                boxShadow: '0 0 20px var(--theme-primary, rgba(0,212,255,0.4))',
-              }}
+              className="w-full py-3 rounded-xl font-orbitron text-[10px] font-bold tracking-widest uppercase transition-all active:scale-95 mt-2 border border-transparent text-theme-primary hover:text-white hover:bg-gradient-to-r hover:from-theme-primary/30 hover:to-transparent hover:border-theme-primary/40"
             >
               Recalibrate_Now
             </button>

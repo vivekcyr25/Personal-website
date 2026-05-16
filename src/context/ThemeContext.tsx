@@ -7,10 +7,11 @@ import { MotionConfig } from 'framer-motion';
 
 // Theme map defined outside component — never recreated
 const THEME_MAP: Record<string, { primary: string; secondary: string; accent: string; bg: string; text: string; border: string }> = {
-  'CYAN_CORE':      { primary: '#00d4ff', secondary: '#00ff88', accent: '#ff006e', bg: '#020b24', text: '#ffffff', border: 'rgba(255,255,255,0.1)' },
-  'EMERALD_MATRIX': { primary: '#00ff88', secondary: '#00d4ff', accent: '#ffee00', bg: '#021810', text: '#e0fff0', border: 'rgba(0,255,136,0.1)' },
-  'MAGENTA_SYNTH':  { primary: '#ff006e', secondary: '#9d00ff', accent: '#00d4ff', bg: '#1a0110', text: '#fff0f5', border: 'rgba(255,0,110,0.1)' },
-  'VIOLET_NEURAL':  { primary: '#9d00ff', secondary: '#ff006e', accent: '#00ff88', bg: '#0f021a', text: '#f5f0ff', border: 'rgba(157,0,255,0.1)' },
+  'CYAN_CORE':      { primary: '#00E5FF', secondary: '#8B5CF6', accent: '#FF3D8B', bg: '#030712', text: '#ffffff', border: 'rgba(255,255,255,0.1)' },
+  'EMERALD_MATRIX': { primary: '#00FF9D', secondary: '#00E5FF', accent: '#FBBF24', bg: '#020B24', text: '#e0fff0', border: 'rgba(0,255,136,0.1)' },
+  'VIOLET_NEURAL':  { primary: '#8B5CF6', secondary: '#FF3D8B', accent: '#00FF9D', bg: '#070B1A', text: '#f5f0ff', border: 'rgba(157,0,255,0.1)' },
+  'MAGENTA_SYNTH':  { primary: '#FF006E', secondary: '#00E5FF', accent: '#8B5CF6', bg: '#070B1A', text: '#fff0f5', border: 'rgba(255,0,110,0.1)' },
+  'SILVER_GLASS':   { primary: '#E2E8F0', secondary: '#00E5FF', accent: '#8B5CF6', bg: '#0B1020', text: '#ffffff', border: 'rgba(255,255,255,0.1)' },
 };
 
 function applyThemeVars(prefs: SystemPreferences) {
